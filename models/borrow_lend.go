@@ -17,6 +17,6 @@ type BorrowLend struct {
 type BorrowLendSide string
 
 const (
-	BorrowLendSideBorrow BorrowLendSide = "Borrow"
-	BorrowLendSideLend   BorrowLendSide = "Lend"
+	Borrow BorrowLendSide = "Borrow"
+	Lend   BorrowLendSide = "Lend"
 )

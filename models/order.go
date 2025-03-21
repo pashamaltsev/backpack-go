@@ -32,8 +32,10 @@ type Order struct {
 type Side string
 
 const (
-	SideBid Side = "Bid"
-	SideAsk Side = "Ask"
+	Bid  Side = "Bid"
+	Ask  Side = "Ask"
+	Buy  Side = "Bid"
+	Sell Side = "Ask"
 )
 
 type OrderType string

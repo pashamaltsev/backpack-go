@@ -1,3 +1,3 @@
 # backpack-go
 
-api_version: 2025-02-28
+api_version: 2025-03-19

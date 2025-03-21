@@ -17,7 +17,7 @@ type BorrowLendHistory struct {
 	Quantity          *float64             `json:"quantity,string"`
 	Source            BorrowLendSourceType `json:"source"`
 	Symbol            string               `json:"symbol"`
-	Timestamp         time.Time            `json:"timestamp" time_format:"unix"`
+	Timestamp         time.Time            `json:"timestamp" time_format:"2006-01-02T15:04:05.000"`
 	SpotMarginOrderID string               `json:"spotMarginOrderId"`
 }
 
@@ -70,7 +70,7 @@ type InterestHistory struct {
 	PositionID   string                     `json:"positionId"`
 	Quantity     float64                    `json:"quantity,string"`
 	Symbol       string                     `json:"symbol"`
-	Timestamp    time.Time                  `json:"timestamp" time_format:"2006-01-02T15:04:05.000Z"`
+	Timestamp    time.Time                  `json:"timestamp" time_format:"2006-01-02T15:04:05"`
 }
 
 type InterestHistoryPaymentType string
@@ -105,7 +105,7 @@ type BorrowPositionHistory struct {
 	CumulativeInterest float64              `json:"cumulativeInterest,string"`
 	AvgInterestRate    float64              `json:"avgInterestRate,string"`
 	Side               BorrowLendSide       `json:"side"`
-	CreatedAt          time.Time            `json:"createdAt" time_format:"2006-01-02T15:04:05.000Z"`
+	CreatedAt          time.Time            `json:"createdAt" time_format:"2006-01-02T15:04:05.000"`
 }
 
 type FillHistoryOptions struct {
@@ -140,7 +140,7 @@ type FillHistory struct {
 	Side            Side                `json:"side"`
 	Symbol          string              `json:"symbol"`
 	SystemOrderType FillSystemOrderType `json:"systemOrderType"`
-	Timestamp       time.Time           `json:"timestamp" time_format:"2006-01-02T15:04:05.000Z"`
+	Timestamp       time.Time           `json:"timestamp" time_format:"2006-01-02T15:04:05.000"`
 	TradeID         *int64              `json:"tradeId"`
 }
 
@@ -166,7 +166,7 @@ type FundingHistory struct {
 	SubAccountID         *int      `json:"subaccountId"`
 	Symbol               string    `json:"symbol"`
 	Quantity             float64   `json:"quantity,string"`
-	IntervalEndTimestamp time.Time `json:"intervalEndTimestamp" time_format:"2006-01-02T15:04:05.000Z"`
+	IntervalEndTimestamp time.Time `json:"intervalEndTimestamp" time_format:"2006-01-02T15:04:05.000"`
 	FundingRate          float64   `json:"fundingRate,string"`
 }
 
@@ -233,7 +233,7 @@ type PnlHistoryOptions struct {
 type PnlHistory struct {
 	PnlRealized float64   `json:"pnlRealized,string"`
 	Symbol      string    `json:"symbol"`
-	Timestamp   time.Time `json:"timestamp" time_format:"2006-01-02T15:04:05.000Z"`
+	Timestamp   time.Time `json:"timestamp" time_format:"2006-01-02T15:04:05.000"`
 }
 
 type SettlementHistoryOptions struct {
@@ -258,6 +258,6 @@ type SettlementHistory struct {
 	Quantity     float64   `json:"quantity,string"`
 	Source       string    `json:"source"`
 	SubaccountID *int      `json:"subaccountId"`
-	Timestamp    time.Time `json:"timestamp" time_format:"2006-01-02T15:04:05.000Z"`
+	Timestamp    time.Time `json:"timestamp" time_format:"2006-01-02T15:04:05.000"`
 	UserID       int       `json:"userId"`
 }

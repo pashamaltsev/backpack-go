@@ -29,19 +29,21 @@ func init() {
 
 func NewRESTClient(options ...Options) *BackpackREST {
 	opts := defaultRESTOptions()
-	for _, option := range options {
-		option(opts)
-	}
-	restyClient := resty.New().
+	client := resty.New().
 		SetBaseURL(opts.BaseURL).
-		SetResponseMiddlewares(handleError)
+		SetResponseMiddlewares(handleError).
+		SetAllowMethodDeletePayload(true)
+
+	for _, option := range options {
+		option(opts, client)
+	}
 
 	return &BackpackREST{
 		BaseURL:   opts.BaseURL,
 		APIKey:    opts.APIKey,
 		APISecret: opts.APISecret,
 		Windows:   opts.Windows,
-		client:    restyClient,
+		client:    client,
 	}
 }
 
@@ -234,9 +236,9 @@ func (b *BackpackREST) GetBorrowLendPositions() ([]*models.BorrowLend, error) {
 }
 
 func (b *BackpackREST) ExecuteBorrowLend(asset string, side models.BorrowLendSide, quantity float64) error {
-	url, _ := url.JoinPath(b.BaseURL + "/api/v1/borrowLend/market")
+	url, _ := url.JoinPath(b.BaseURL + "/api/v1/borrowLend")
 	params := map[string]string{"symbol": asset, "side": string(side), "quantity": fmt.Sprintf("%f", quantity)}
-	_, err := requestWithAuth(b, "POST", url, "borrowLendMarketQuery", params)
+	_, err := requestWithAuth(b, "POST", url, "borrowLendExecute", params)
 	return err
 }
 
@@ -245,14 +247,14 @@ func (b *BackpackREST) GetBalance() (map[string]*models.AssetBalance, error) {
 	return response[map[string]*models.AssetBalance](requestWithAuth(b, "GET", url, "balanceQuery", nil))
 }
 
-func (b *BackpackREST) GetCollateral() (*models.Collateral, error) {
+func (b *BackpackREST) GetAccountCollateral() (*models.Collateral, error) {
 	url, _ := url.JoinPath(b.BaseURL + "/api/v1/capital/collateral")
 	return response[*models.Collateral](requestWithAuth(b, "GET", url, "collateralQuery", nil))
 }
 
-func (b *BackpackREST) GetDeposits(filter ...models.DateFilter) (*models.Deposit, error) {
+func (b *BackpackREST) GetDeposits(filter ...models.DateFilter) ([]*models.Deposit, error) {
 	url, _ := url.JoinPath(b.BaseURL + "/wapi/v1/capital/deposits")
-	return response[*models.Deposit](requestWithAuth(b, "GET", url, "depositQueryAll", nil))
+	return response[[]*models.Deposit](requestWithAuth(b, "GET", url, "depositQueryAll", nil))
 }
 
 func (b *BackpackREST) GetDepositAddress(blockchain string) (*models.DepositAddress, error) {
@@ -268,7 +270,7 @@ func (b *BackpackREST) GetWithdrawals(filter ...models.DateFilter) ([]*models.Wi
 
 func (b *BackpackREST) RequestWithdrawal(asset string, quantity float64, address, blockchain string, options ...models.WithdrawalOptions) (*models.Withdrawal, error) {
 	url, _ := url.JoinPath(b.BaseURL + "/wapi/v1/capital/withdrawals")
-	params := map[string]any{"symbol": asset, "quantity": fmt.Sprintf("%f", quantity), "address": address}
+	params := map[string]any{"symbol": asset, "quantity": fmt.Sprintf("%f", quantity), "address": address, "blockchain": blockchain}
 	if len(options) > 0 {
 		maps.Copy(params, utils.StructToMap[map[string]any](options[0]))
 	}
@@ -276,7 +278,7 @@ func (b *BackpackREST) RequestWithdrawal(asset string, quantity float64, address
 }
 
 func (b *BackpackREST) GetPositions() ([]*models.Position, error) {
-	url, _ := url.JoinPath(b.BaseURL + "/api/v1/positions")
+	url, _ := url.JoinPath(b.BaseURL + "/api/v1/position")
 	return response[[]*models.Position](requestWithAuth(b, "GET", url, "positionQuery", nil))
 }
 
@@ -298,14 +300,15 @@ func (b *BackpackREST) GetInterestHistory(options ...models.InterestHistoryOptio
 	return response[[]*models.InterestHistory](requestWithAuth(b, "GET", url, "interestHistoryQueryAll", params))
 }
 
-func (b *BackpackREST) GetBorrowPositionsHistory(options ...models.BorrowPostionHistoryOptions) ([]*models.BorrowPositionHistory, error) {
-	url, _ := url.JoinPath(b.BaseURL + "/wapi/v1/history/borrowLend/positions")
-	params := map[string]string{}
-	if len(options) > 0 {
-		params = utils.StructToMap[map[string]string](options[0])
-	}
-	return response[[]*models.BorrowPositionHistory](requestWithAuth(b, "GET", url, "borrowLendPositionHistoryQueryAll", params))
-}
+// TODO: Can't yet query that with a signed request, unknown instruction
+// func (b *BackpackREST) GetBorrowPositionsHistory(options ...models.BorrowPostionHistoryOptions) ([]*models.BorrowPositionHistory, error) {
+// 	url, _ := url.JoinPath(b.BaseURL + "/wapi/v1/history/borrowLend/positions")
+// 	params := map[string]string{}
+// 	if len(options) > 0 {
+// 		params = utils.StructToMap[map[string]string](options[0])
+// 	}
+// 	return response[[]*models.BorrowPositionHistory](requestWithAuth(b, "GET", url, "borrowLendPositionsQueryAll", params))
+// }
 
 func (b *BackpackREST) GetFillHistory(options ...models.FillHistoryOptions) ([]*models.FillHistory, error) {
 	url, _ := url.JoinPath(b.BaseURL + "/wapi/v1/history/fills")
@@ -366,7 +369,12 @@ func (b *BackpackREST) GetOrderByOrderID(symbol, orderID string) (*models.Order,
 
 func (b *BackpackREST) ExecuteMarketOrder(symbol string, side models.Side, quantity float64, options ...models.OrderOptions) (*models.Order, error) {
 	url, _ := url.JoinPath(b.BaseURL + "/api/v1/order")
-	params := map[string]string{"symbol": symbol, "side": string(side), "quantity": fmt.Sprintf("%f", quantity)}
+	params := map[string]string{
+		"orderType": string(models.OrderTypeMarket),
+		"symbol":    symbol,
+		"side":      string(side),
+		"quantity":  fmt.Sprintf("%f", quantity),
+	}
 	if len(options) > 0 {
 		maps.Copy(params, utils.StructToMap[map[string]string](options[0]))
 	}
@@ -375,7 +383,13 @@ func (b *BackpackREST) ExecuteMarketOrder(symbol string, side models.Side, quant
 
 func (b *BackpackREST) ExecuteLimitOrder(symbol string, side models.Side, quantity float64, price float64, options ...models.OrderOptions) (*models.Order, error) {
 	url, _ := url.JoinPath(b.BaseURL + "/api/v1/order")
-	params := map[string]string{"symbol": symbol, "side": string(side), "quantity": fmt.Sprintf("%f", quantity), "price": fmt.Sprintf("%f", price)}
+	params := map[string]string{
+		"orderType": string(models.OrderTypeLimit),
+		"symbol":    symbol,
+		"side":      string(side),
+		"quantity":  fmt.Sprintf("%f", quantity),
+		"price":     fmt.Sprintf("%f", price),
+	}
 	if len(options) > 0 {
 		maps.Copy(params, utils.StructToMap[map[string]string](options[0]))
 	}
@@ -384,7 +398,13 @@ func (b *BackpackREST) ExecuteLimitOrder(symbol string, side models.Side, quanti
 
 func (b *BackpackREST) ExecuteStopMarketOrder(symbol string, side models.Side, quantity float64, price float64, options ...models.OrderOptions) (*models.Order, error) {
 	url, _ := url.JoinPath(b.BaseURL + "/api/v1/order")
-	params := map[string]string{"symbol": symbol, "side": string(side), "quantity": fmt.Sprintf("%f", quantity), "price": fmt.Sprintf("%f", price)}
+	params := map[string]string{
+		"orderType": string(models.OrderTypeStopMarket),
+		"symbol":    symbol,
+		"side":      string(side),
+		"quantity":  fmt.Sprintf("%f", quantity),
+		"price":     fmt.Sprintf("%f", price),
+	}
 	if len(options) > 0 {
 		maps.Copy(params, utils.StructToMap[map[string]string](options[0]))
 	}
@@ -393,7 +413,14 @@ func (b *BackpackREST) ExecuteStopMarketOrder(symbol string, side models.Side, q
 
 func (b *BackpackREST) ExecuteStopLimitOrder(symbol string, side models.Side, quantity float64, price, triggerPrice float64, options ...models.OrderOptions) (*models.Order, error) {
 	url, _ := url.JoinPath(b.BaseURL + "/api/v1/order")
-	params := map[string]string{"symbol": symbol, "side": string(side), "quantity": fmt.Sprintf("%f", quantity), "price": fmt.Sprintf("%f", price), "triggerPrice": fmt.Sprintf("%f", triggerPrice)}
+	params := map[string]string{
+		"orderType":    string(models.OrderTypeStopLimit),
+		"symbol":       symbol,
+		"side":         string(side),
+		"quantity":     fmt.Sprintf("%f", quantity),
+		"price":        fmt.Sprintf("%f", price),
+		"triggerPrice": fmt.Sprintf("%f", triggerPrice),
+	}
 	if len(options) > 0 {
 		maps.Copy(params, utils.StructToMap[map[string]string](options[0]))
 	}
@@ -426,11 +453,11 @@ func (b *BackpackREST) GetOrders(symbol *string, marketType *models.MarketType) 
 	return response[[]*models.Order](requestWithAuth(b, "GET", url, "orderQueryAll", params))
 }
 
-func (b *BackpackREST) CancelOrders(symbol string, marketType *models.OrderType) ([]*models.Order, error) {
+func (b *BackpackREST) CancelOrders(symbol string, marketType ...models.OrderType) ([]*models.Order, error) {
 	url, _ := url.JoinPath(b.BaseURL + "/api/v1/orders")
 	params := map[string]string{"symbol": symbol}
-	if marketType != nil {
-		params["marketType"] = string(*marketType)
+	if len(marketType) > 0 {
+		params["marketType"] = string(marketType[0])
 	}
 	return response[[]*models.Order](requestWithAuth(b, "DELETE", url, "orderCancelAll", params))
 }
@@ -461,7 +488,9 @@ func requestWithAuth(api *BackpackREST, method, url string, instruction string, 
 }
 
 func request(api *BackpackREST, method, url string, params any, headers ...map[string]string) (*resty.Response, error) {
-	request := api.client.R().SetHeader("User-Agent", constants.UserAgent)
+	request := api.client.R().
+		SetHeader("User-Agent", constants.UserAgent).
+		SetHeader("Content-Type", "application/json")
 	if len(headers) > 0 {
 		request.SetHeaders(headers[0])
 	}
@@ -479,6 +508,7 @@ func request(api *BackpackREST, method, url string, params any, headers ...map[s
 		request.SetBody(params)
 		fn = request.Patch
 	case "DELETE":
+		request.SetBody(params)
 		fn = request.Delete
 	}
 	return fn(url)
@@ -488,16 +518,18 @@ func response[T any](response *resty.Response, e error) (result T, err error) {
 	if e != nil {
 		return result, e
 	}
+
 	err = json.Unmarshal(response.Bytes(), &result)
 	return
 }
 
 func handleError(_ *resty.Client, res *resty.Response) error {
 	if res.IsError() {
-		fmt.Println(res.String())
 		backpackError := &BackpackError{}
 		if err := json.Unmarshal(res.Bytes(), backpackError); err != nil {
-			return err
+			backpackError.Code = "UNKNOWN"
+			backpackError.Message = res.String()
+			return backpackError
 		}
 		return backpackError
 	}
