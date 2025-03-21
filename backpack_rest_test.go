@@ -70,7 +70,6 @@ func TestBackpackREST(t *testing.T) {
 		if err != nil {
 			t.Errorf("GetMarket failed: %v", err)
 		} else {
-			fmt.Println(market.CreatedAt)
 			fmt.Printf("OK: GetMarket, %s Market orderbook state: %+v\n\n", market.Symbol, market.OrderBookState)
 		}
 	})
@@ -91,7 +90,6 @@ func TestBackpackREST(t *testing.T) {
 		if err != nil {
 			t.Errorf("GetDepth failed: %v", err)
 		} else {
-			fmt.Println(depth.Timestamp)
 			fmt.Printf("OK: GetDepth, depth last update id: %s\n\n", depth.LastUpdateID)
 		}
 	})
@@ -144,7 +142,6 @@ func TestBackpackREST(t *testing.T) {
 		if err != nil {
 			t.Errorf("GetMarkPrices failed: %v", err)
 		} else {
-			fmt.Println(prices[0].NextFundingTimestamp)
 			fmt.Printf("OK: GetMarkPrices, mark prices count: %d\n\n", len(prices))
 		}
 	})

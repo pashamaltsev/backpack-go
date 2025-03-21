@@ -56,7 +56,7 @@ func WithProxy(proxy string) Options {
 func defaultRESTOptions() *options {
 	return &options{
 		BaseURL: constants.RESTBaseURL,
-		Windows: constants.Windows,
+		Windows: constants.DefaultWindows,
 	}
 }
 

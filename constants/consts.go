@@ -8,5 +8,5 @@ const (
 	RESTBaseURL      = `https://api.backpack.exchange`
 	WebSocketBaseURL = `wss://ws.backpack.exchange`
 
-	Windows = time.Duration(time.Second * 10)
+	DefaultWindows = time.Duration(time.Second * 10)
 )

@@ -48,101 +48,101 @@ func NewRESTClient(options ...Options) *BackpackREST {
 }
 
 func (b *BackpackREST) GetMarketAssets() ([]*models.MarketAssets, error) {
-	url, _ := url.JoinPath(b.BaseURL + "/api/v1/assets")
-	return response[[]*models.MarketAssets](request(b, "GET", url, nil))
+	path := "/api/v1/assets"
+	return Response[[]*models.MarketAssets](Request(b, "GET", path, nil))
 }
 
 func (b *BackpackREST) GetMarketCollateral() ([]*models.MarketCollateral, error) {
-	url, _ := url.JoinPath(b.BaseURL + "/api/v1/collateral")
-	return response[[]*models.MarketCollateral](request(b, "GET", url, nil))
+	path := "/api/v1/collateral"
+	return Response[[]*models.MarketCollateral](Request(b, "GET", path, nil))
 }
 
 func (b *BackpackREST) GetBorrowLendMarkets() ([]*models.BorrowLendMarket, error) {
-	url, _ := url.JoinPath(b.BaseURL + "/api/v1/borrowLend/markets")
-	return response[[]*models.BorrowLendMarket](request(b, "GET", url, nil))
+	path := "/api/v1/borrowLend/markets"
+	return Response[[]*models.BorrowLendMarket](Request(b, "GET", path, nil))
 }
 
 // symbol is optional, ex USDT、USDC、SOL...
 func (b *BackpackREST) GetBorrowLendMarketsHistory(interval models.BorrowLendMarketHistoryInterval, symbol ...string) ([]*models.BorrowLendMarketHistory, error) {
-	url, _ := url.JoinPath(b.BaseURL + "/api/v1/borrowLend/markets/history")
+	path := "/api/v1/borrowLend/markets/history"
 	params := map[string]string{"interval": string(interval)}
 	if len(symbol) > 0 {
 		params["symbol"] = symbol[0]
 	}
-	return response[[]*models.BorrowLendMarketHistory](request(b, "GET", url, params))
+	return Response[[]*models.BorrowLendMarketHistory](Request(b, "GET", path, params))
 }
 
 func (b *BackpackREST) GetMarkets() ([]*models.Market, error) {
-	url, _ := url.JoinPath(b.BaseURL + "/api/v1/markets")
-	return response[[]*models.Market](request(b, "GET", url, nil))
+	path := "/api/v1/markets"
+	return Response[[]*models.Market](Request(b, "GET", path, nil))
 }
 
 func (b *BackpackREST) GetMarket(symbol string) (*models.Market, error) {
-	url, _ := url.JoinPath(b.BaseURL + "/api/v1/market")
+	path := "/api/v1/market"
 	params := map[string]string{"symbol": symbol}
-	return response[*models.Market](request(b, "GET", url, params))
+	return Response[*models.Market](Request(b, "GET", path, params))
 }
 
 // interval is optional
 func (b *BackpackREST) GetTickers(interval ...models.TickerInterval) ([]*models.Ticker, error) {
-	url, _ := url.JoinPath(b.BaseURL + "/api/v1/tickers")
+	path := "/api/v1/tickers"
 	params := map[string]string{}
 	if len(interval) > 0 {
 		params["interval"] = string(interval[0])
 	}
-	return response[[]*models.Ticker](request(b, "GET", url, params))
+	return Response[[]*models.Ticker](Request(b, "GET", path, params))
 }
 
 // interval is optional
 func (b *BackpackREST) GetTicker(symbol string, interval ...models.TickerInterval) (*models.Ticker, error) {
-	url, _ := url.JoinPath(b.BaseURL + "/api/v1/ticker")
+	path := "/api/v1/ticker"
 	params := map[string]string{"symbol": symbol}
 	if len(interval) > 0 {
 		params["interval"] = string(interval[0])
 	}
-	return response[*models.Ticker](request(b, "GET", url, params))
+	return Response[*models.Ticker](Request(b, "GET", path, params))
 }
 
 func (b *BackpackREST) GetDepth(symbol string) (*models.Depth, error) {
-	url, _ := url.JoinPath(b.BaseURL + "/api/v1/depth")
+	path := "/api/v1/depth"
 	params := map[string]string{"symbol": symbol}
-	return response[*models.Depth](request(b, "GET", url, params))
+	return Response[*models.Depth](Request(b, "GET", path, params))
 }
 
 // endTime is optional
 func (b *BackpackREST) GetKlines(symbol string, interval models.KlineInterval, startTime time.Time, endTime ...time.Time) ([]*models.Kline, error) {
-	url, _ := url.JoinPath(b.BaseURL + "/api/v1/klines")
+	path := "/api/v1/klines"
 	params := map[string]string{"symbol": symbol, "interval": string(interval), "startTime": fmt.Sprintf("%d", startTime.UTC().Unix())}
 	if len(endTime) > 0 {
 		params["endTime"] = fmt.Sprintf("%d", endTime[0].UTC().Unix())
 	}
-	return response[[]*models.Kline](request(b, "GET", url, params))
+	return Response[[]*models.Kline](Request(b, "GET", path, params))
 }
 
 // symbol is optional
 func (b *BackpackREST) GetMarkPrices(symbol ...string) ([]*models.MarkPrice, error) {
-	url, _ := url.JoinPath(b.BaseURL + "/api/v1/markPrices")
+	path := "/api/v1/markPrices"
 	params := map[string]string{}
 	if len(symbol) > 0 {
 		params["interval"] = string(symbol[0])
 	}
-	return response[[]*models.MarkPrice](request(b, "GET", url, params))
+	return Response[[]*models.MarkPrice](Request(b, "GET", path, params))
 }
 
 func (b *BackpackREST) GetOpenInterest(symbol ...string) ([]*models.OpenInterest, error) {
-	url, _ := url.JoinPath(b.BaseURL + "/api/v1/openInterest")
+	path := "/api/v1/openInterest"
 	params := map[string]string{}
 	if len(symbol) > 0 {
 		params["symbol"] = string(symbol[0])
 	}
-	return response[[]*models.OpenInterest](request(b, "GET", url, params))
+	return Response[[]*models.OpenInterest](Request(b, "GET", path, params))
 }
 
 func (b *BackpackREST) GetFundingRates(symbol string) (*models.PageHeaders, []*models.FundingRate, error) {
-	url, _ := url.JoinPath(b.BaseURL + "/api/v1/fundingRates")
+	path := "/api/v1/fundingRates"
 	params := map[string]string{"symbol": symbol}
-	resp, err := request(b, "GET", url, params)
-	rates, err := response[[]*models.FundingRate](resp, err)
+	resp, err := Request(b, "GET", path, params)
+	rates, err := Response[[]*models.FundingRate](resp, err)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -151,19 +151,19 @@ func (b *BackpackREST) GetFundingRates(symbol string) (*models.PageHeaders, []*m
 }
 
 func (b *BackpackREST) GetStatus() (*models.Status, error) {
-	url, _ := url.JoinPath(b.BaseURL + "/api/v1/status")
-	return response[*models.Status](request(b, "GET", url, nil))
+	path := "/api/v1/status"
+	return Response[*models.Status](Request(b, "GET", path, nil))
 }
 
 func (b *BackpackREST) Ping() error {
-	url, _ := url.JoinPath(b.BaseURL + "/api/v1/ping")
-	_, err := request(b, "GET", url, nil)
+	path := "/api/v1/ping"
+	_, err := Request(b, "GET", path, nil)
 	return err
 }
 
 func (b *BackpackREST) GetTime() (*time.Time, error) {
-	url, _ := url.JoinPath(b.BaseURL + "/api/v1/time")
-	resp, err := request(b, "GET", url, nil)
+	path := "/api/v1/time"
+	resp, err := Request(b, "GET", path, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -176,199 +176,197 @@ func (b *BackpackREST) GetTime() (*time.Time, error) {
 
 // limitoffset is optional
 func (b *BackpackREST) GetTrades(symbol string, limitoffset ...models.LimitOffset) ([]*models.Trade, error) {
-	url, _ := url.JoinPath(b.BaseURL + "/api/v1/trades")
+	path := "/api/v1/trades"
 	params := map[string]string{"symbol": symbol}
 	if limitoffset != nil {
 		maps.Copy(params, utils.StructToMap[map[string]string](limitoffset[0]))
 	}
-	return response[[]*models.Trade](request(b, "GET", url, params))
+	return Response[[]*models.Trade](Request(b, "GET", path, params))
 }
 
 func (b *BackpackREST) GetTradesHistory(symbol string, limit ...int) ([]*models.Trade, error) {
-	url, _ := url.JoinPath(b.BaseURL + "/api/v1/trades/history")
+	path := "/api/v1/trades/history"
 	params := map[string]string{"symbol": symbol}
 	if len(limit) > 0 {
 		params["limit"] = strconv.Itoa(limit[0])
 	}
-	return response[[]*models.Trade](request(b, "GET", url, params))
+	return Response[[]*models.Trade](Request(b, "GET", path, params))
 }
 
 func (b *BackpackREST) GetAccount() (*models.Account, error) {
-	url, _ := url.JoinPath(b.BaseURL + "/api/v1/account")
-	return response[*models.Account](requestWithAuth(b, "GET", url, "accountQuery", nil))
+	path := "/api/v1/account"
+	return Response[*models.Account](RequestWithAuth(b, "GET", path, "accountQuery", nil))
 }
 
 func (b *BackpackREST) UpdateAccount(account *models.AccountUpdateble) error {
-	url, _ := url.JoinPath(b.BaseURL + "/api/v1/account")
-	_, err := requestWithAuth(b, "PATCH", url, "accountUpdate", account)
+	path := "/api/v1/account"
+	_, err := RequestWithAuth(b, "PATCH", path, "accountUpdate", account)
 	return err
 }
 
 func (b *BackpackREST) GetAccountMaxBorrow(asset string) (*models.AccountBorrowLimit, error) {
-	url, _ := url.JoinPath(b.BaseURL + "/api/v1/account/limits/borrow")
+	path := "/api/v1/account/limits/borrow"
 	params := map[string]string{"symbol": asset}
-	return response[*models.AccountBorrowLimit](requestWithAuth(b, "GET", url, "maxBorrowQuantity", params))
+	return Response[*models.AccountBorrowLimit](RequestWithAuth(b, "GET", path, "maxBorrowQuantity", params))
 }
 
 func (b *BackpackREST) GetAccountMaxOrder(symbol string, side models.Side, args ...models.AccountOrderLimitOptions) (*models.AccountOrderLimit, error) {
-	url, _ := url.JoinPath(b.BaseURL + "/api/v1/account/limits/order")
+	path := "/api/v1/account/limits/order"
 	params := map[string]string{"symbol": symbol, "side": string(side)}
 	if len(args) > 0 {
 		maps.Copy(params, utils.StructToMap[map[string]string](args[0]))
 	}
-	return response[*models.AccountOrderLimit](requestWithAuth(b, "GET", url, "maxOrderQuantity", params))
+	return Response[*models.AccountOrderLimit](RequestWithAuth(b, "GET", path, "maxOrderQuantity", params))
 }
 
 func (b *BackpackREST) GetAccountMaxWithdrawal(asset string, args ...models.AccountWithdrawalLimitOptions) (*models.AccountWithdrawalLimit, error) {
-	url, _ := url.JoinPath(b.BaseURL + "/api/v1/account/limits/withdrawal")
+	path := "/api/v1/account/limits/withdrawal"
 	params := map[string]string{"symbol": asset}
 	if len(args) > 0 {
 		maps.Copy(params, utils.StructToMap[map[string]string](args[0]))
 	}
-	fmt.Println(utils.StructToMap[map[string]string](args[0]))
-	fmt.Println("params", params["autoBorrow"])
-	return response[*models.AccountWithdrawalLimit](requestWithAuth(b, "GET", url, "maxWithdrawalQuantity", params))
+	return Response[*models.AccountWithdrawalLimit](RequestWithAuth(b, "GET", path, "maxWithdrawalQuantity", params))
 }
 
 func (b *BackpackREST) GetBorrowLendPositions() ([]*models.BorrowLend, error) {
-	url, _ := url.JoinPath(b.BaseURL + "/api/v1/borrowLend/positions")
-	return response[[]*models.BorrowLend](requestWithAuth(b, "GET", url, "borrowLendPositionQuery", nil))
+	path := "/api/v1/borrowLend/positions"
+	return Response[[]*models.BorrowLend](RequestWithAuth(b, "GET", path, "borrowLendPositionQuery", nil))
 }
 
 func (b *BackpackREST) ExecuteBorrowLend(asset string, side models.BorrowLendSide, quantity float64) error {
-	url, _ := url.JoinPath(b.BaseURL + "/api/v1/borrowLend")
+	path := "/api/v1/borrowLend"
 	params := map[string]string{"symbol": asset, "side": string(side), "quantity": fmt.Sprintf("%f", quantity)}
-	_, err := requestWithAuth(b, "POST", url, "borrowLendExecute", params)
+	_, err := RequestWithAuth(b, "POST", path, "borrowLendExecute", params)
 	return err
 }
 
 func (b *BackpackREST) GetBalance() (map[string]*models.AssetBalance, error) {
-	url, _ := url.JoinPath(b.BaseURL + "/api/v1/capital")
-	return response[map[string]*models.AssetBalance](requestWithAuth(b, "GET", url, "balanceQuery", nil))
+	path := "/api/v1/capital"
+	return Response[map[string]*models.AssetBalance](RequestWithAuth(b, "GET", path, "balanceQuery", nil))
 }
 
 func (b *BackpackREST) GetAccountCollateral() (*models.Collateral, error) {
-	url, _ := url.JoinPath(b.BaseURL + "/api/v1/capital/collateral")
-	return response[*models.Collateral](requestWithAuth(b, "GET", url, "collateralQuery", nil))
+	path := "/api/v1/capital/collateral"
+	return Response[*models.Collateral](RequestWithAuth(b, "GET", path, "collateralQuery", nil))
 }
 
 func (b *BackpackREST) GetDeposits(filter ...models.DateFilter) ([]*models.Deposit, error) {
-	url, _ := url.JoinPath(b.BaseURL + "/wapi/v1/capital/deposits")
-	return response[[]*models.Deposit](requestWithAuth(b, "GET", url, "depositQueryAll", nil))
+	path := "/wapi/v1/capital/deposits"
+	return Response[[]*models.Deposit](RequestWithAuth(b, "GET", path, "depositQueryAll", nil))
 }
 
 func (b *BackpackREST) GetDepositAddress(blockchain string) (*models.DepositAddress, error) {
-	url, _ := url.JoinPath(b.BaseURL + "/wapi/v1/capital/deposit/address")
+	path := "/wapi/v1/capital/deposit/address"
 	params := map[string]string{"blockchain": blockchain}
-	return response[*models.DepositAddress](requestWithAuth(b, "GET", url, "depositAddressQuery", params))
+	return Response[*models.DepositAddress](RequestWithAuth(b, "GET", path, "depositAddressQuery", params))
 }
 
 func (b *BackpackREST) GetWithdrawals(filter ...models.DateFilter) ([]*models.Withdrawal, error) {
-	url, _ := url.JoinPath(b.BaseURL + "/wapi/v1/capital/withdrawals")
-	return response[[]*models.Withdrawal](requestWithAuth(b, "GET", url, "withdrawalQueryAll", nil))
+	path := "/wapi/v1/capital/withdrawals"
+	return Response[[]*models.Withdrawal](RequestWithAuth(b, "GET", path, "withdrawalQueryAll", nil))
 }
 
 func (b *BackpackREST) RequestWithdrawal(asset string, quantity float64, address, blockchain string, options ...models.WithdrawalOptions) (*models.Withdrawal, error) {
-	url, _ := url.JoinPath(b.BaseURL + "/wapi/v1/capital/withdrawals")
+	path := "/wapi/v1/capital/withdrawals"
 	params := map[string]any{"symbol": asset, "quantity": fmt.Sprintf("%f", quantity), "address": address, "blockchain": blockchain}
 	if len(options) > 0 {
 		maps.Copy(params, utils.StructToMap[map[string]any](options[0]))
 	}
-	return response[*models.Withdrawal](requestWithAuth(b, "POST", url, "withdraw", params))
+	return Response[*models.Withdrawal](RequestWithAuth(b, "POST", path, "withdraw", params))
 }
 
 func (b *BackpackREST) GetPositions() ([]*models.Position, error) {
-	url, _ := url.JoinPath(b.BaseURL + "/api/v1/position")
-	return response[[]*models.Position](requestWithAuth(b, "GET", url, "positionQuery", nil))
+	path := "/api/v1/position"
+	return Response[[]*models.Position](RequestWithAuth(b, "GET", path, "positionQuery", nil))
 }
 
 func (b *BackpackREST) GetBorrowLendHistory(options ...models.BorrowHistoryOptions) ([]*models.BorrowLendHistory, error) {
-	url, _ := url.JoinPath(b.BaseURL + "/wapi/v1/history/borrowLend")
+	path := "/wapi/v1/history/borrowLend"
 	params := map[string]string{}
 	if len(options) > 0 {
 		params = utils.StructToMap[map[string]string](options[0])
 	}
-	return response[[]*models.BorrowLendHistory](requestWithAuth(b, "GET", url, "borrowHistoryQueryAll", params))
+	return Response[[]*models.BorrowLendHistory](RequestWithAuth(b, "GET", path, "borrowHistoryQueryAll", params))
 }
 
 func (b *BackpackREST) GetInterestHistory(options ...models.InterestHistoryOptions) ([]*models.InterestHistory, error) {
-	url, _ := url.JoinPath(b.BaseURL + "/wapi/v1/history/interest")
+	path := "/wapi/v1/history/interest"
 	params := map[string]string{}
 	if len(options) > 0 {
 		params = utils.StructToMap[map[string]string](options[0])
 	}
-	return response[[]*models.InterestHistory](requestWithAuth(b, "GET", url, "interestHistoryQueryAll", params))
+	return Response[[]*models.InterestHistory](RequestWithAuth(b, "GET", path, "interestHistoryQueryAll", params))
 }
 
 // TODO: Can't yet query that with a signed request, unknown instruction
 // func (b *BackpackREST) GetBorrowPositionsHistory(options ...models.BorrowPostionHistoryOptions) ([]*models.BorrowPositionHistory, error) {
-// 	url, _ := url.JoinPath(b.BaseURL + "/wapi/v1/history/borrowLend/positions")
+// 	path := "/wapi/v1/history/borrowLend/positions"
 // 	params := map[string]string{}
 // 	if len(options) > 0 {
 // 		params = utils.StructToMap[map[string]string](options[0])
 // 	}
-// 	return response[[]*models.BorrowPositionHistory](requestWithAuth(b, "GET", url, "borrowLendPositionsQueryAll", params))
+// 	return Response[[]*models.BorrowPositionHistory](RequestWithAuth(b, "GET", path, "borrowLendPositionsQueryAll", params))
 // }
 
 func (b *BackpackREST) GetFillHistory(options ...models.FillHistoryOptions) ([]*models.FillHistory, error) {
-	url, _ := url.JoinPath(b.BaseURL + "/wapi/v1/history/fills")
+	path := "/wapi/v1/history/fills"
 	params := map[string]string{}
 	if len(options) > 0 {
 		params = utils.StructToMap[map[string]string](options[0])
 	}
-	return response[[]*models.FillHistory](requestWithAuth(b, "GET", url, "fillHistoryQueryAll", params))
+	return Response[[]*models.FillHistory](RequestWithAuth(b, "GET", path, "fillHistoryQueryAll", params))
 }
 
 func (b *BackpackREST) GetFundingHistory(options ...models.FundingHistoryOptions) ([]*models.FundingHistory, error) {
-	url, _ := url.JoinPath(b.BaseURL + "/wapi/v1/history/funding")
+	path := "/wapi/v1/history/funding"
 	params := map[string]string{}
 	if len(options) > 0 {
 		params = utils.StructToMap[map[string]string](options[0])
 	}
-	return response[[]*models.FundingHistory](requestWithAuth(b, "GET", url, "fundingHistoryQueryAll", params))
+	return Response[[]*models.FundingHistory](RequestWithAuth(b, "GET", path, "fundingHistoryQueryAll", params))
 }
 
 func (b *BackpackREST) GetOrdersHistory(options ...models.OrderHistoryOptions) ([]*models.OrderHistory, error) {
-	url, _ := url.JoinPath(b.BaseURL + "/wapi/v1/history/orders")
+	path := "/wapi/v1/history/orders"
 	params := map[string]string{}
 	if len(options) > 0 {
 		params = utils.StructToMap[map[string]string](options[0])
 	}
-	return response[[]*models.OrderHistory](requestWithAuth(b, "GET", url, "orderHistoryQueryAll", params))
+	return Response[[]*models.OrderHistory](RequestWithAuth(b, "GET", path, "orderHistoryQueryAll", params))
 }
 
 func (b *BackpackREST) GetPnlHistory(options ...models.PnlHistoryOptions) ([]*models.PnlHistory, error) {
-	url, _ := url.JoinPath(b.BaseURL + "/wapi/v1/history/pnl")
+	path := "/wapi/v1/history/pnl"
 	params := map[string]string{}
 	if len(options) > 0 {
 		params = utils.StructToMap[map[string]string](options[0])
 	}
-	return response[[]*models.PnlHistory](requestWithAuth(b, "GET", url, "pnlHistoryQueryAll", params))
+	return Response[[]*models.PnlHistory](RequestWithAuth(b, "GET", path, "pnlHistoryQueryAll", params))
 }
 
 func (b *BackpackREST) GetSettlementHistory(options ...models.SettlementHistoryOptions) ([]*models.SettlementHistory, error) {
-	url, _ := url.JoinPath(b.BaseURL + "/wapi/v1/history/settlement")
+	path := "/wapi/v1/history/settlement"
 	params := map[string]string{}
 	if len(options) > 0 {
 		params = utils.StructToMap[map[string]string](options[0])
 	}
-	return response[[]*models.SettlementHistory](requestWithAuth(b, "GET", url, "settlementHistoryQueryAll", params))
+	return Response[[]*models.SettlementHistory](RequestWithAuth(b, "GET", path, "settlementHistoryQueryAll", params))
 }
 
 func (b *BackpackREST) GetOrderByClientID(symbol string, clientID int) (*models.Order, error) {
-	url, _ := url.JoinPath(b.BaseURL + "/api/v1/order")
+	path := "/api/v1/order"
 	params := map[string]string{"symbol": symbol, "clientId": strconv.Itoa(clientID)}
-	return response[*models.Order](requestWithAuth(b, "GET", url, "orderQuery", params))
+	return Response[*models.Order](RequestWithAuth(b, "GET", path, "orderQuery", params))
 }
 
 func (b *BackpackREST) GetOrderByOrderID(symbol, orderID string) (*models.Order, error) {
 	url, _ := url.JoinPath(b.BaseURL + "/api/v1/order")
 	params := map[string]string{"symbol": symbol, "orderId": orderID}
-	return response[*models.Order](requestWithAuth(b, "GET", url, "orderQuery", params))
+	return Response[*models.Order](RequestWithAuth(b, "GET", url, "orderQuery", params))
 }
 
 func (b *BackpackREST) ExecuteMarketOrder(symbol string, side models.Side, quantity float64, options ...models.OrderOptions) (*models.Order, error) {
-	url, _ := url.JoinPath(b.BaseURL + "/api/v1/order")
+	path := "/api/v1/order"
 	params := map[string]string{
 		"orderType": string(models.OrderTypeMarket),
 		"symbol":    symbol,
@@ -378,11 +376,11 @@ func (b *BackpackREST) ExecuteMarketOrder(symbol string, side models.Side, quant
 	if len(options) > 0 {
 		maps.Copy(params, utils.StructToMap[map[string]string](options[0]))
 	}
-	return response[*models.Order](requestWithAuth(b, "POST", url, "orderExecute", params))
+	return Response[*models.Order](RequestWithAuth(b, "POST", path, "orderExecute", params))
 }
 
 func (b *BackpackREST) ExecuteLimitOrder(symbol string, side models.Side, quantity float64, price float64, options ...models.OrderOptions) (*models.Order, error) {
-	url, _ := url.JoinPath(b.BaseURL + "/api/v1/order")
+	path := "/api/v1/order"
 	params := map[string]string{
 		"orderType": string(models.OrderTypeLimit),
 		"symbol":    symbol,
@@ -393,11 +391,11 @@ func (b *BackpackREST) ExecuteLimitOrder(symbol string, side models.Side, quanti
 	if len(options) > 0 {
 		maps.Copy(params, utils.StructToMap[map[string]string](options[0]))
 	}
-	return response[*models.Order](requestWithAuth(b, "POST", url, "orderExecute", params))
+	return Response[*models.Order](RequestWithAuth(b, "POST", path, "orderExecute", params))
 }
 
 func (b *BackpackREST) ExecuteStopMarketOrder(symbol string, side models.Side, quantity float64, price float64, options ...models.OrderOptions) (*models.Order, error) {
-	url, _ := url.JoinPath(b.BaseURL + "/api/v1/order")
+	path := "/api/v1/order"
 	params := map[string]string{
 		"orderType": string(models.OrderTypeStopMarket),
 		"symbol":    symbol,
@@ -408,11 +406,11 @@ func (b *BackpackREST) ExecuteStopMarketOrder(symbol string, side models.Side, q
 	if len(options) > 0 {
 		maps.Copy(params, utils.StructToMap[map[string]string](options[0]))
 	}
-	return response[*models.Order](requestWithAuth(b, "POST", url, "orderExecute", params))
+	return Response[*models.Order](RequestWithAuth(b, "POST", path, "orderExecute", params))
 }
 
 func (b *BackpackREST) ExecuteStopLimitOrder(symbol string, side models.Side, quantity float64, price, triggerPrice float64, options ...models.OrderOptions) (*models.Order, error) {
-	url, _ := url.JoinPath(b.BaseURL + "/api/v1/order")
+	path := "/api/v1/order"
 	params := map[string]string{
 		"orderType":    string(models.OrderTypeStopLimit),
 		"symbol":       symbol,
@@ -424,25 +422,25 @@ func (b *BackpackREST) ExecuteStopLimitOrder(symbol string, side models.Side, qu
 	if len(options) > 0 {
 		maps.Copy(params, utils.StructToMap[map[string]string](options[0]))
 	}
-	return response[*models.Order](requestWithAuth(b, "POST", url, "orderExecute", params))
+	return Response[*models.Order](RequestWithAuth(b, "POST", path, "orderExecute", params))
 }
 
 func (b *BackpackREST) CancelOrderByOrderID(symbol string, orderID string) (*models.Order, error) {
-	url, _ := url.JoinPath(b.BaseURL + "/api/v1/order")
+	path := "/api/v1/order"
 	params := map[string]string{"symbol": symbol, "orderId": orderID}
-	return response[*models.Order](requestWithAuth(b, "DELETE", url, "orderCancel", params))
+	return Response[*models.Order](RequestWithAuth(b, "DELETE", path, "orderCancel", params))
 }
 
 func (b *BackpackREST) CancelOrderByClientID(symbol string, clientID int) (*models.Order, error) {
-	url, _ := url.JoinPath(b.BaseURL + "/api/v1/order")
+	path := "/api/v1/order"
 	params := map[string]string{"symbol": symbol, "clientId": strconv.Itoa(clientID)}
-	return response[*models.Order](requestWithAuth(b, "DELETE", url, "orderCancel", params))
+	return Response[*models.Order](RequestWithAuth(b, "DELETE", path, "orderCancel", params))
 }
 
 // symbol is optional
 // marketType is optional
 func (b *BackpackREST) GetOrders(symbol *string, marketType *models.MarketType) ([]*models.Order, error) {
-	url, _ := url.JoinPath(b.BaseURL + "/api/v1/orders")
+	path := "/api/v1/orders"
 	params := map[string]string{}
 	if symbol != nil {
 		params["symbol"] = *symbol
@@ -450,16 +448,16 @@ func (b *BackpackREST) GetOrders(symbol *string, marketType *models.MarketType) 
 	if marketType != nil {
 		params["marketType"] = string(*marketType)
 	}
-	return response[[]*models.Order](requestWithAuth(b, "GET", url, "orderQueryAll", params))
+	return Response[[]*models.Order](RequestWithAuth(b, "GET", path, "orderQueryAll", params))
 }
 
 func (b *BackpackREST) CancelOrders(symbol string, marketType ...models.OrderType) ([]*models.Order, error) {
-	url, _ := url.JoinPath(b.BaseURL + "/api/v1/orders")
+	path := "/api/v1/orders"
 	params := map[string]string{"symbol": symbol}
 	if len(marketType) > 0 {
 		params["marketType"] = string(marketType[0])
 	}
-	return response[[]*models.Order](requestWithAuth(b, "DELETE", url, "orderCancelAll", params))
+	return Response[[]*models.Order](RequestWithAuth(b, "DELETE", path, "orderCancelAll", params))
 }
 
 func (b *BackpackREST) RequestForQuote(rfqId string, bidPrice, askPrice float64, clientID *int) (*models.Quote, error) {
@@ -468,10 +466,10 @@ func (b *BackpackREST) RequestForQuote(rfqId string, bidPrice, askPrice float64,
 	if clientID != nil {
 		params["clientId"] = strconv.Itoa(*clientID)
 	}
-	return response[*models.Quote](requestWithAuth(b, "POST", url, "quoteSubmit", params))
+	return Response[*models.Quote](RequestWithAuth(b, "POST", url, "quoteSubmit", params))
 }
 
-func requestWithAuth(api *BackpackREST, method, url string, instruction string, params any) (resp *resty.Response, err error) {
+func RequestWithAuth(api *BackpackREST, method, url string, instruction string, params any) (resp *resty.Response, err error) {
 	if api.APIKey == "" || api.APISecret == "" {
 		return nil, ErrInvalidAPIKeyOrSecret
 	}
@@ -484,10 +482,10 @@ func requestWithAuth(api *BackpackREST, method, url string, instruction string, 
 	if err != nil {
 		return nil, err
 	}
-	return request(api, method, url, params, headers)
+	return Request(api, method, url, params, headers)
 }
 
-func request(api *BackpackREST, method, url string, params any, headers ...map[string]string) (*resty.Response, error) {
+func Request(api *BackpackREST, method, path string, params any, headers ...map[string]string) (*resty.Response, error) {
 	request := api.client.R().
 		SetHeader("User-Agent", constants.UserAgent).
 		SetHeader("Content-Type", "application/json")
@@ -511,10 +509,11 @@ func request(api *BackpackREST, method, url string, params any, headers ...map[s
 		request.SetBody(params)
 		fn = request.Delete
 	}
+	url, _ := url.JoinPath(api.BaseURL, path)
 	return fn(url)
 }
 
-func response[T any](response *resty.Response, e error) (result T, err error) {
+func Response[T any](response *resty.Response, e error) (result T, err error) {
 	if e != nil {
 		return result, e
 	}

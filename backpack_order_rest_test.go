@@ -21,7 +21,7 @@ func TestBackpackOrderREST(t *testing.T) {
 		if err != nil {
 			t.Errorf("ExecuteOrder failed: %v", err)
 		} else {
-			fmt.Printf("OK: ExecuteOrder, order: %+v\n\n", order)
+			fmt.Printf("OK: ExecuteOrder, order id: %+v\n\n", order.ID)
 		}
 	})
 
