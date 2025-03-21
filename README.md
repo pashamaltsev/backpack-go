@@ -109,3 +109,6 @@ if err != nil {
 }
 fmt.Printf("Open orders: %d\n", len(orders))
 ```
+
+## License
+feeeei/backpack-go is released under the [MIT License](https://opensource.org/licenses/MIT).
