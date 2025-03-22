@@ -85,7 +85,10 @@ if err != nil {
 }
 fmt.Printf("Account: %+v\n", account)
 
-// Place a limit order
+// also support:
+// - ExecuteMarketOrder(symbol, side, quantity)
+// - ExecuteLimitOrder(symbol, side, price, quantity)
+// - ExecuteConditionalLimitOrder(symbol, side, triggerPrice, price, quantity)
 order, err := clientWithAuth.ExecuteLimitOrder(
     "BTC_USDC",
     options.Buy,
