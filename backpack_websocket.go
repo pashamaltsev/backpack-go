@@ -6,6 +6,7 @@ import (
 	"time"
 
 	"github.com/feeeei/backpack-go/models"
+	"github.com/feeeei/backpack-go/options"
 	ops "github.com/feeeei/backpack-go/websocket"
 	"github.com/gorilla/websocket"
 	jsoniter "github.com/json-iterator/go"
@@ -81,7 +82,7 @@ func (client *BackpackWebsocket) Subscribe200msDepth(symbol string, handler func
 	return SubscribePublicStream(client, fmt.Sprintf("depth.200ms.%s", symbol), new(models.DepthUpdate), handler)
 }
 
-func (client *BackpackWebsocket) SubscribeKLine(interval models.KLineInterval, symbol string, handler func(*models.KLineUpdate)) error {
+func (client *BackpackWebsocket) SubscribeKLine(interval options.KLineInterval, symbol string, handler func(*models.KLineUpdate)) error {
 	return SubscribePublicStream(client, fmt.Sprintf("kline.%s.%s", interval, symbol), new(models.KLineUpdate), handler)
 }
 

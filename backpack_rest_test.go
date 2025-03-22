@@ -5,7 +5,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/feeeei/backpack-go/models"
+	"github.com/feeeei/backpack-go/options"
 	"github.com/feeeei/backpack-go/utils"
 )
 
@@ -46,7 +46,7 @@ func TestBackpackPublicREST(t *testing.T) {
 
 	// test GetBorrowLendMarketsHistory
 	t.Run("test GetBorrowLendMarketsHistory", func(t *testing.T) {
-		history, err := rest.GetBorrowLendMarketsHistory(models.OneDay)
+		history, err := rest.GetBorrowLendMarketsHistory(options.OneDay)
 		if err != nil {
 			t.Errorf("GetBorrowLendMarketsHistory failed: %v", err)
 		} else {
@@ -98,7 +98,7 @@ func TestBackpackPublicREST(t *testing.T) {
 	t.Run("test GetKlines", func(t *testing.T) {
 		endTime := time.Now()
 		startTime := endTime.Add(-24 * time.Hour) // 过去24小时
-		klines, err := rest.GetKlines(symbol, models.OneHourKline, startTime, endTime)
+		klines, err := rest.GetKlines(symbol, options.KLineInterval1h, startTime, endTime)
 		if err != nil {
 			t.Errorf("GetKlines failed: %v", err)
 		} else {
@@ -178,7 +178,7 @@ func TestBackpackPublicREST(t *testing.T) {
 
 	// test GetTrades
 	t.Run("test GetTrades", func(t *testing.T) {
-		trades, err := rest.GetTrades(symbol, models.LimitOffset{Limit: utils.Ptr(100)})
+		trades, err := rest.GetTrades(symbol, options.LimitOffset{Limit: utils.Ptr(100)})
 		if err != nil {
 			t.Errorf("GetTrades failed: %v", err)
 		} else {

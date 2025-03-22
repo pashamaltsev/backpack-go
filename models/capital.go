@@ -40,12 +40,6 @@ type CollateralAsset struct {
 	AvailableQuantity float64 `json:"availableQuantity,string"`
 }
 
-type DateFilter struct {
-	From *time.Time `json:"from" time_format:"unixmilli"`
-	To   *time.Time `json:"to" time_format:"unixmilli"`
-	LimitOffset
-}
-
 type Deposit struct {
 	ID                      int           `json:"id"`
 	ToAddress               *string       `json:"toAddress"`
@@ -122,10 +116,3 @@ const (
 	WithdrawalStatusConfirmed WithdrawalStatus = "confirmed"
 	WithdrawalStatusPending   WithdrawalStatus = "pending"
 )
-
-type WithdrawalOptions struct {
-	ClientID       *string `json:"clientId"`
-	TwoFactorCode  *string `json:"twoFactorCode"`
-	AutoBorrow     *bool   `json:"autoBorrow"`
-	AutoLendRedeem *bool   `json:"autoLendRedeem"`
-}

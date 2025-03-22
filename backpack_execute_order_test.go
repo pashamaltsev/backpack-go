@@ -6,6 +6,7 @@ import (
 	"testing"
 
 	"github.com/feeeei/backpack-go/models"
+	"github.com/feeeei/backpack-go/options"
 	"github.com/feeeei/backpack-go/rest"
 )
 
@@ -17,7 +18,7 @@ func TestBackpackExecuteOrder(t *testing.T) {
 	// test ExecuteMarketOrder
 	t.Run("test ExecuteMarketOrder", func(t *testing.T) {
 		var err error
-		order, err := rest.ExecuteMarketOrder(symbol+"_PERP", models.Buy, 0.1, models.WithAutoLendRedeem(true), models.WithTimeInForce(models.TimeInForceFOK))
+		order, err := rest.ExecuteMarketOrder(symbol+"_PERP", models.Buy, 0.1, options.WithAutoLendRedeem(true), options.WithTimeInForce(options.TimeInForceFOK))
 		if err != nil {
 			t.Errorf("ExecuteOrder failed: %v", err)
 		} else {
@@ -32,7 +33,7 @@ func TestBackpackExecuteOrder(t *testing.T) {
 			models.Sell,
 			500,
 			0.11,
-			models.WithAutoLendRedeem(true),
+			options.WithAutoLendRedeem(true),
 		)
 		if err != nil {
 			t.Errorf("ExecuteOrder failed: %v", err)
@@ -50,7 +51,7 @@ func TestBackpackExecuteOrder(t *testing.T) {
 			500,
 			490,
 			0.1,
-			models.WithAutoLendRedeem(true),
+			options.WithAutoLendRedeem(true),
 		)
 		if err != nil {
 			t.Errorf("ExecuteOrder failed: %v", err)

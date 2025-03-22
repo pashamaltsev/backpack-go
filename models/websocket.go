@@ -2,6 +2,8 @@ package models
 
 import (
 	"time"
+
+	"github.com/feeeei/backpack-go/options"
 )
 
 type Newable interface {
@@ -9,34 +11,34 @@ type Newable interface {
 }
 
 type OrderUpdate struct {
-	EventType               string                  `json:"e"`
-	EventTime               time.Time               `json:"E" time_format:"unixmicro"`
-	Symbol                  string                  `json:"s"`
-	ClientOrderID           int64                   `json:"c"`
-	Side                    Side                    `json:"S"`
-	OrderType               OrderType               `json:"o"`
-	TimeInForce             TimeInForce             `json:"f"`
-	Quantity                float64                 `json:"q,string"`
-	QuantityInQuote         float64                 `json:"Q,string"`
-	Price                   float64                 `json:"p,string"`
-	TriggerPrice            float64                 `json:"P,string"`
-	TakeProfitTriggerPrice  float64                 `json:"a,string"`
-	StopLossTriggerPrice    float64                 `json:"b,string"`
-	TriggerQuantity         float64                 `json:"Y,string"`
-	OrderStatus             OrderStatus             `json:"X"`
-	OrderExpiryReason       OrderExpiryReason       `json:"R"`
-	OrderID                 string                  `json:"i"`
-	TradeID                 int64                   `json:"t"`
-	FillQuantity            float64                 `json:"l,string"`
-	ExecutedQuantity        float64                 `json:"z,string"`
-	ExecutedQuantityInQuote float64                 `json:"Z,string"`
-	FillPrice               float64                 `json:"L,string"`
-	IsMaker                 bool                    `json:"m"`
-	Fee                     float64                 `json:"n,string"`
-	FeeSymbol               string                  `json:"N"`
-	SelfTradePrevention     SelfTradePreventionType `json:"V"`
-	EngineTimestamp         time.Time               `json:"T" time_format:"unixmicro"`
-	Origin                  string                  `json:"O"`
+	EventType               string                          `json:"e"`
+	EventTime               time.Time                       `json:"E" time_format:"unixmicro"`
+	Symbol                  string                          `json:"s"`
+	ClientOrderID           int64                           `json:"c"`
+	Side                    options.Side                    `json:"S"`
+	OrderType               OrderType                       `json:"o"`
+	TimeInForce             options.TimeInForce             `json:"f"`
+	Quantity                float64                         `json:"q,string"`
+	QuantityInQuote         float64                         `json:"Q,string"`
+	Price                   float64                         `json:"p,string"`
+	TriggerPrice            float64                         `json:"P,string"`
+	TakeProfitTriggerPrice  float64                         `json:"a,string"`
+	StopLossTriggerPrice    float64                         `json:"b,string"`
+	TriggerQuantity         float64                         `json:"Y,string"`
+	OrderStatus             OrderStatus                     `json:"X"`
+	OrderExpiryReason       OrderExpiryReason               `json:"R"`
+	OrderID                 string                          `json:"i"`
+	TradeID                 int64                           `json:"t"`
+	FillQuantity            float64                         `json:"l,string"`
+	ExecutedQuantity        float64                         `json:"z,string"`
+	ExecutedQuantityInQuote float64                         `json:"Z,string"`
+	FillPrice               float64                         `json:"L,string"`
+	IsMaker                 bool                            `json:"m"`
+	Fee                     float64                         `json:"n,string"`
+	FeeSymbol               string                          `json:"N"`
+	SelfTradePrevention     options.SelfTradePreventionType `json:"V"`
+	EngineTimestamp         time.Time                       `json:"T" time_format:"unixmicro"`
+	Origin                  string                          `json:"O"`
 }
 
 func (u *OrderUpdate) New() any {
@@ -67,19 +69,19 @@ func (u *PositionUpdate) New() any {
 }
 
 type RFQUpdate struct {
-	EventType       string    `json:"e"`
-	EventTime       time.Time `json:"E" time_format:"unixmicro"`
-	RFQID           string    `json:"R"`
-	Symbol          string    `json:"s"`
-	QuoteID         string    `json:"Q"`
-	ClientQuoteID   string    `json:"C"`
-	Side            Side      `json:"S"`
-	Price           float64   `json:"p,string"`
-	Quantity        float64   `json:"q,string"`
-	SubmissionTime  time.Time `json:"w" time_format:"unixmilli"`
-	ExpiryTime      time.Time `json:"W" time_format:"unixmilli"`
-	Status          string    `json:"X"`
-	EngineTimestamp time.Time `json:"T" time_format:"unixmicro"`
+	EventType       string       `json:"e"`
+	EventTime       time.Time    `json:"E" time_format:"unixmicro"`
+	RFQID           string       `json:"R"`
+	Symbol          string       `json:"s"`
+	QuoteID         string       `json:"Q"`
+	ClientQuoteID   string       `json:"C"`
+	Side            options.Side `json:"S"`
+	Price           float64      `json:"p,string"`
+	Quantity        float64      `json:"q,string"`
+	SubmissionTime  time.Time    `json:"w" time_format:"unixmilli"`
+	ExpiryTime      time.Time    `json:"W" time_format:"unixmilli"`
+	Status          string       `json:"X"`
+	EngineTimestamp time.Time    `json:"T" time_format:"unixmicro"`
 }
 
 func (u *RFQUpdate) New() any {
@@ -117,26 +119,6 @@ func (u *DepthUpdate) New() any {
 	return &DepthUpdate{}
 }
 
-type KLineInterval string
-
-const (
-	KLineInterval1m  KLineInterval = "1m"
-	KLineInterval3m  KLineInterval = "3m"
-	KLineInterval5m  KLineInterval = "5m"
-	KLineInterval15m KLineInterval = "15m"
-	KLineInterval30m KLineInterval = "30m"
-	KLineInterval1h  KLineInterval = "1h"
-	KLineInterval2h  KLineInterval = "2h"
-	KLineInterval4h  KLineInterval = "4h"
-	KLineInterval6h  KLineInterval = "6h"
-	KLineInterval8h  KLineInterval = "8h"
-	KLineInterval12h KLineInterval = "12h"
-	KLineInterval1d  KLineInterval = "1d"
-	KLineInterval3d  KLineInterval = "3d"
-	KLineInterval1w  KLineInterval = "1w"
-	KLineInterval1M  KLineInterval = "1M"
-)
-
 type KLineUpdate struct {
 	EventType string    `json:"e"`
 	EventTime time.Time `json:"E" time_format:"unixmicro"`
@@ -156,13 +138,13 @@ func (u *KLineUpdate) New() any {
 }
 
 type LiquidationUpdate struct {
-	EventType  string    `json:"e"`
-	EventTime  time.Time `json:"E" time_format:"unixmicro"`
-	Quantity   float64   `json:"q,string"`
-	Price      float64   `json:"p,string"`
-	Side       Side      `json:"S"`
-	Symbol     string    `json:"s"`
-	EngineTime time.Time `json:"T" time_format:"unixmicro"`
+	EventType  string       `json:"e"`
+	EventTime  time.Time    `json:"E" time_format:"unixmicro"`
+	Quantity   float64      `json:"q,string"`
+	Price      float64      `json:"p,string"`
+	Side       options.Side `json:"S"`
+	Symbol     string       `json:"s"`
+	EngineTime time.Time    `json:"T" time_format:"unixmicro"`
 }
 
 func (u *LiquidationUpdate) New() any {

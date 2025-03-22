@@ -30,15 +30,6 @@ type BorrowLendMarket struct {
 	StepSize                     float64               `json:"stepSize,string"`
 }
 
-type BorrowLendMarketHistoryInterval string
-
-const (
-	OneDay   BorrowLendMarketHistoryInterval = "1d"
-	OneWeek  BorrowLendMarketHistoryInterval = "1w"
-	OneMonth BorrowLendMarketHistoryInterval = "1month"
-	OneYear  BorrowLendMarketHistoryInterval = "1year"
-)
-
 type BorrowLendMarketHistory struct {
 	BorrowInterestRate float64   `json:"borrowInterestRate,string"`
 	BorrowedQuantity   float64   `json:"borrowedQuantity,string"`

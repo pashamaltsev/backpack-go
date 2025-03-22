@@ -1,5 +1,7 @@
 package models
 
+import "github.com/feeeei/backpack-go/options"
+
 type Account struct {
 	AccountUpdateble
 	AutoRealizePnl  bool    `json:"autoRealizePnl"`
@@ -27,18 +29,10 @@ type AccountBorrowLimit struct {
 }
 
 type AccountOrderLimit struct {
-	Symbol           string  `json:"symbol"`
-	Side             Side    `json:"side"`
-	MaxOrderQuantity float64 `json:"maxOrderQuantity,string"`
-	AccountOrderLimitOptions
-}
-
-type AccountOrderLimitOptions struct {
-	Price           *float64 `json:"price,string,omitempty"`
-	ReduceOnly      *bool    `json:"reduceOnly,omitempty"`
-	AutoBorrow      *bool    `json:"autoBorrow,omitempty"`
-	AutoBorrowRepay *bool    `json:"autoBorrowRepay,omitempty"`
-	AutoLendRedeem  *bool    `json:"autoLendRedeem,omitempty"`
+	Symbol           string       `json:"symbol"`
+	Side             options.Side `json:"side"`
+	MaxOrderQuantity float64      `json:"maxOrderQuantity,string"`
+	options.AccountOrderLimitOptions
 }
 
 type AccountWithdrawalLimit struct {
@@ -46,9 +40,4 @@ type AccountWithdrawalLimit struct {
 	Symbol                string `json:"symbol"`
 	AutoBorrow            *bool  `json:"autoBorrow,omitempty"`
 	AutoLendRedeem        *bool  `json:"autoLendRedeem,omitempty"`
-}
-
-type AccountWithdrawalLimitOptions struct {
-	AutoBorrow     *bool `json:"autoBorrow,string,omitempty"`
-	AutoLendRedeem *bool `json:"autoLendRedeem,string,omitempty"`
 }

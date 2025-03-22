@@ -9,6 +9,7 @@ import (
 
 	"github.com/feeeei/backpack-go/constants"
 	"github.com/feeeei/backpack-go/models"
+	"github.com/feeeei/backpack-go/options"
 	"github.com/feeeei/backpack-go/rest"
 	"github.com/feeeei/backpack-go/utils"
 	json "github.com/json-iterator/go"
@@ -64,7 +65,7 @@ func (b *BackpackREST) GetBorrowLendMarkets() ([]*models.BorrowLendMarket, error
 }
 
 // symbol is optional, ex USDT、USDC、SOL...
-func (b *BackpackREST) GetBorrowLendMarketsHistory(interval models.BorrowLendMarketHistoryInterval, symbol ...string) ([]*models.BorrowLendMarketHistory, error) {
+func (b *BackpackREST) GetBorrowLendMarketsHistory(interval options.BorrowLendMarketHistoryInterval, symbol ...string) ([]*models.BorrowLendMarketHistory, error) {
 	path := "/api/v1/borrowLend/markets/history"
 	params := map[string]string{"interval": string(interval)}
 	if len(symbol) > 0 {
@@ -85,7 +86,7 @@ func (b *BackpackREST) GetMarket(symbol string) (*models.Market, error) {
 }
 
 // interval is optional
-func (b *BackpackREST) GetTickers(interval ...models.TickerInterval) ([]*models.Ticker, error) {
+func (b *BackpackREST) GetTickers(interval ...options.TickerInterval) ([]*models.Ticker, error) {
 	path := "/api/v1/tickers"
 	params := map[string]string{}
 	if len(interval) > 0 {
@@ -95,7 +96,7 @@ func (b *BackpackREST) GetTickers(interval ...models.TickerInterval) ([]*models.
 }
 
 // interval is optional
-func (b *BackpackREST) GetTicker(symbol string, interval ...models.TickerInterval) (*models.Ticker, error) {
+func (b *BackpackREST) GetTicker(symbol string, interval ...options.TickerInterval) (*models.Ticker, error) {
 	path := "/api/v1/ticker"
 	params := map[string]string{"symbol": symbol}
 	if len(interval) > 0 {
@@ -111,7 +112,7 @@ func (b *BackpackREST) GetDepth(symbol string) (*models.Depth, error) {
 }
 
 // endTime is optional
-func (b *BackpackREST) GetKlines(symbol string, interval models.KlineInterval, startTime time.Time, endTime ...time.Time) ([]*models.Kline, error) {
+func (b *BackpackREST) GetKlines(symbol string, interval options.KLineInterval, startTime time.Time, endTime ...time.Time) ([]*models.Kline, error) {
 	path := "/api/v1/klines"
 	params := map[string]string{"symbol": symbol, "interval": string(interval), "startTime": fmt.Sprintf("%d", startTime.UTC().Unix())}
 	if len(endTime) > 0 {
@@ -176,7 +177,7 @@ func (b *BackpackREST) GetTime() (*time.Time, error) {
 }
 
 // limitoffset is optional
-func (b *BackpackREST) GetTrades(symbol string, limitoffset ...models.LimitOffset) ([]*models.Trade, error) {
+func (b *BackpackREST) GetTrades(symbol string, limitoffset ...options.LimitOffset) ([]*models.Trade, error) {
 	path := "/api/v1/trades"
 	params := map[string]string{"symbol": symbol}
 	if limitoffset != nil {
@@ -211,7 +212,7 @@ func (b *BackpackREST) GetAccountMaxBorrow(asset string) (*models.AccountBorrowL
 	return Response[*models.AccountBorrowLimit](RequestWithAuth(b, "GET", path, "maxBorrowQuantity", params))
 }
 
-func (b *BackpackREST) GetAccountMaxOrder(symbol string, side models.Side, args ...models.AccountOrderLimitOptions) (*models.AccountOrderLimit, error) {
+func (b *BackpackREST) GetAccountMaxOrder(symbol string, side options.Side, args ...options.AccountOrderLimitOptions) (*models.AccountOrderLimit, error) {
 	path := "/api/v1/account/limits/order"
 	params := map[string]string{"symbol": symbol, "side": string(side)}
 	if len(args) > 0 {
@@ -220,7 +221,7 @@ func (b *BackpackREST) GetAccountMaxOrder(symbol string, side models.Side, args 
 	return Response[*models.AccountOrderLimit](RequestWithAuth(b, "GET", path, "maxOrderQuantity", params))
 }
 
-func (b *BackpackREST) GetAccountMaxWithdrawal(asset string, args ...models.AccountWithdrawalLimitOptions) (*models.AccountWithdrawalLimit, error) {
+func (b *BackpackREST) GetAccountMaxWithdrawal(asset string, args ...options.AccountWithdrawalLimitOptions) (*models.AccountWithdrawalLimit, error) {
 	path := "/api/v1/account/limits/withdrawal"
 	params := map[string]string{"symbol": asset}
 	if len(args) > 0 {
@@ -234,7 +235,7 @@ func (b *BackpackREST) GetBorrowLendPositions() ([]*models.BorrowLend, error) {
 	return Response[[]*models.BorrowLend](RequestWithAuth(b, "GET", path, "borrowLendPositionQuery", nil))
 }
 
-func (b *BackpackREST) ExecuteBorrowLend(asset string, side models.BorrowLendSide, quantity float64) error {
+func (b *BackpackREST) ExecuteBorrowLend(asset string, side options.BorrowLendSide, quantity float64) error {
 	path := "/api/v1/borrowLend"
 	params := map[string]string{"symbol": asset, "side": string(side), "quantity": fmt.Sprintf("%f", quantity)}
 	_, err := RequestWithAuth(b, "POST", path, "borrowLendExecute", params)
@@ -251,7 +252,7 @@ func (b *BackpackREST) GetAccountCollateral() (*models.Collateral, error) {
 	return Response[*models.Collateral](RequestWithAuth(b, "GET", path, "collateralQuery", nil))
 }
 
-func (b *BackpackREST) GetDeposits(filter ...models.DateFilter) ([]*models.Deposit, error) {
+func (b *BackpackREST) GetDeposits(filter ...options.DateFilter) ([]*models.Deposit, error) {
 	path := "/wapi/v1/capital/deposits"
 	return Response[[]*models.Deposit](RequestWithAuth(b, "GET", path, "depositQueryAll", nil))
 }
@@ -262,12 +263,12 @@ func (b *BackpackREST) GetDepositAddress(blockchain string) (*models.DepositAddr
 	return Response[*models.DepositAddress](RequestWithAuth(b, "GET", path, "depositAddressQuery", params))
 }
 
-func (b *BackpackREST) GetWithdrawals(filter ...models.DateFilter) ([]*models.Withdrawal, error) {
+func (b *BackpackREST) GetWithdrawals(filter ...options.DateFilter) ([]*models.Withdrawal, error) {
 	path := "/wapi/v1/capital/withdrawals"
 	return Response[[]*models.Withdrawal](RequestWithAuth(b, "GET", path, "withdrawalQueryAll", nil))
 }
 
-func (b *BackpackREST) RequestWithdrawal(asset string, quantity float64, address, blockchain string, options ...models.WithdrawalOptions) (*models.Withdrawal, error) {
+func (b *BackpackREST) RequestWithdrawal(asset string, quantity float64, address, blockchain string, options ...options.WithdrawalOptions) (*models.Withdrawal, error) {
 	path := "/wapi/v1/capital/withdrawals"
 	params := map[string]any{"symbol": asset, "quantity": fmt.Sprintf("%f", quantity), "address": address, "blockchain": blockchain}
 	if len(options) > 0 {
@@ -281,7 +282,7 @@ func (b *BackpackREST) GetPositions() ([]*models.Position, error) {
 	return Response[[]*models.Position](RequestWithAuth(b, "GET", path, "positionQuery", nil))
 }
 
-func (b *BackpackREST) GetBorrowLendHistory(options ...models.BorrowHistoryOptions) ([]*models.BorrowLendHistory, error) {
+func (b *BackpackREST) GetBorrowLendHistory(options ...options.BorrowHistoryOptions) ([]*models.BorrowLendHistory, error) {
 	path := "/wapi/v1/history/borrowLend"
 	params := map[string]string{}
 	if len(options) > 0 {
@@ -290,7 +291,7 @@ func (b *BackpackREST) GetBorrowLendHistory(options ...models.BorrowHistoryOptio
 	return Response[[]*models.BorrowLendHistory](RequestWithAuth(b, "GET", path, "borrowHistoryQueryAll", params))
 }
 
-func (b *BackpackREST) GetInterestHistory(options ...models.InterestHistoryOptions) ([]*models.InterestHistory, error) {
+func (b *BackpackREST) GetInterestHistory(options ...options.InterestHistoryOptions) ([]*models.InterestHistory, error) {
 	path := "/wapi/v1/history/interest"
 	params := map[string]string{}
 	if len(options) > 0 {
@@ -300,7 +301,7 @@ func (b *BackpackREST) GetInterestHistory(options ...models.InterestHistoryOptio
 }
 
 // TODO: Can't yet query that with a signed request, unknown instruction
-// func (b *BackpackREST) GetBorrowPositionsHistory(options ...models.BorrowPostionHistoryOptions) ([]*models.BorrowPositionHistory, error) {
+// func (b *BackpackREST) GetBorrowPositionsHistory(options ...options.BorrowPostionHistoryOptions) ([]*models.BorrowPositionHistory, error) {
 // 	path := "/wapi/v1/history/borrowLend/positions"
 // 	params := map[string]string{}
 // 	if len(options) > 0 {
@@ -309,7 +310,7 @@ func (b *BackpackREST) GetInterestHistory(options ...models.InterestHistoryOptio
 // 	return Response[[]*models.BorrowPositionHistory](RequestWithAuth(b, "GET", path, "borrowLendPositionsQueryAll", params))
 // }
 
-func (b *BackpackREST) GetFillHistory(options ...models.FillHistoryOptions) ([]*models.FillHistory, error) {
+func (b *BackpackREST) GetFillHistory(options ...options.FillHistoryOptions) ([]*models.FillHistory, error) {
 	path := "/wapi/v1/history/fills"
 	params := map[string]string{}
 	if len(options) > 0 {
@@ -318,7 +319,7 @@ func (b *BackpackREST) GetFillHistory(options ...models.FillHistoryOptions) ([]*
 	return Response[[]*models.FillHistory](RequestWithAuth(b, "GET", path, "fillHistoryQueryAll", params))
 }
 
-func (b *BackpackREST) GetFundingHistory(options ...models.FundingHistoryOptions) ([]*models.FundingHistory, error) {
+func (b *BackpackREST) GetFundingHistory(options ...options.FundingHistoryOptions) ([]*models.FundingHistory, error) {
 	path := "/wapi/v1/history/funding"
 	params := map[string]string{}
 	if len(options) > 0 {
@@ -327,7 +328,7 @@ func (b *BackpackREST) GetFundingHistory(options ...models.FundingHistoryOptions
 	return Response[[]*models.FundingHistory](RequestWithAuth(b, "GET", path, "fundingHistoryQueryAll", params))
 }
 
-func (b *BackpackREST) GetOrdersHistory(options ...models.OrderHistoryOptions) ([]*models.OrderHistory, error) {
+func (b *BackpackREST) GetOrdersHistory(options ...options.OrderHistoryOptions) ([]*models.OrderHistory, error) {
 	path := "/wapi/v1/history/orders"
 	params := map[string]string{}
 	if len(options) > 0 {
@@ -336,7 +337,7 @@ func (b *BackpackREST) GetOrdersHistory(options ...models.OrderHistoryOptions) (
 	return Response[[]*models.OrderHistory](RequestWithAuth(b, "GET", path, "orderHistoryQueryAll", params))
 }
 
-func (b *BackpackREST) GetPnlHistory(options ...models.PnlHistoryOptions) ([]*models.PnlHistory, error) {
+func (b *BackpackREST) GetPnlHistory(options ...options.PnlHistoryOptions) ([]*models.PnlHistory, error) {
 	path := "/wapi/v1/history/pnl"
 	params := map[string]string{}
 	if len(options) > 0 {
@@ -345,7 +346,7 @@ func (b *BackpackREST) GetPnlHistory(options ...models.PnlHistoryOptions) ([]*mo
 	return Response[[]*models.PnlHistory](RequestWithAuth(b, "GET", path, "pnlHistoryQueryAll", params))
 }
 
-func (b *BackpackREST) GetSettlementHistory(options ...models.SettlementHistoryOptions) ([]*models.SettlementHistory, error) {
+func (b *BackpackREST) GetSettlementHistory(options ...options.SettlementHistoryOptions) ([]*models.SettlementHistory, error) {
 	path := "/wapi/v1/history/settlement"
 	params := map[string]string{}
 	if len(options) > 0 {
@@ -370,18 +371,18 @@ func (b *BackpackREST) GetOrderByOrderID(symbol, orderID string) (*models.Order,
 // symbol: Trading pair (e.g. "BTC_USDC")
 // side: Bid/Buy or Ask/Sell
 // quantity: The amount to trade
-// options: Optional parameters like clientId, timeInForce etc.
-func (b *BackpackREST) ExecuteMarketOrder(symbol string, side models.Side, quantity float64, options ...models.OrderOption) (*models.Order, error) {
+// opts: Optional parameters like clientId, timeInForce etc.
+func (b *BackpackREST) ExecuteMarketOrder(symbol string, side options.Side, quantity float64, opts ...options.OrderOptionFn) (*models.Order, error) {
 	path := "/api/v1/order"
 	params := map[string]any{
-		"orderType": models.OrderTypeMarket,
+		"orderType": options.OrderTypeMarket,
 		"symbol":    symbol,
 		"side":      side,
 		"quantity":  fmt.Sprintf("%f", quantity),
 	}
-	if len(options) > 0 {
-		ops := &models.OrderOptions{}
-		for _, option := range options {
+	if len(opts) > 0 {
+		ops := &options.OrderOptions{}
+		for _, option := range opts {
 			option(ops)
 		}
 		maps.Copy(params, ops.ToParams())
@@ -394,19 +395,19 @@ func (b *BackpackREST) ExecuteMarketOrder(symbol string, side models.Side, quant
 // side: Bid/Buy or Ask/Sell
 // price: The limit price
 // quantity: The amount to trade
-// options: Optional parameters like clientId, timeInForce etc.
-func (b *BackpackREST) ExecuteLimitOrder(symbol string, side models.Side, price float64, quantity float64, options ...models.OrderOption) (*models.Order, error) {
+// opts: Optional parameters like clientId, timeInForce etc.
+func (b *BackpackREST) ExecuteLimitOrder(symbol string, side options.Side, price float64, quantity float64, opts ...options.OrderOptionFn) (*models.Order, error) {
 	path := "/api/v1/order"
 	params := map[string]any{
-		"orderType": models.OrderTypeLimit,
+		"orderType": options.OrderTypeLimit,
 		"symbol":    symbol,
 		"side":      side,
 		"price":     fmt.Sprintf("%f", price),
 		"quantity":  fmt.Sprintf("%f", quantity),
 	}
-	if len(options) > 0 {
-		ops := &models.OrderOptions{}
-		for _, option := range options {
+	if len(opts) > 0 {
+		ops := &options.OrderOptions{}
+		for _, option := range opts {
 			option(ops)
 		}
 		maps.Copy(params, ops.ToParams())
@@ -420,20 +421,20 @@ func (b *BackpackREST) ExecuteLimitOrder(symbol string, side models.Side, price 
 // triggerPrice: The price at which the limit order will be triggered
 // price: The limit price after trigger
 // quantity: The amount to trade
-// options: Optional parameters like clientId, timeInForce etc.
-func (b *BackpackREST) ExecuteConditionalLimitOrder(symbol string, side models.Side, triggerPrice float64, price float64, quantity float64, options ...models.OrderOption) (*models.Order, error) {
+// opts: Optional parameters like clientId, timeInForce etc.
+func (b *BackpackREST) ExecuteConditionalLimitOrder(symbol string, side options.Side, triggerPrice float64, price float64, quantity float64, opts ...options.OrderOptionFn) (*models.Order, error) {
 	path := "/api/v1/order"
 	params := map[string]any{
-		"orderType":       models.OrderTypeLimit,
+		"orderType":       options.OrderTypeLimit,
 		"symbol":          symbol,
 		"side":            side,
 		"triggerQuantity": fmt.Sprintf("%f", quantity),
 		"price":           fmt.Sprintf("%f", price),
 		"triggerPrice":    fmt.Sprintf("%f", triggerPrice),
 	}
-	if len(options) > 0 {
-		ops := &models.OrderOptions{}
-		for _, option := range options {
+	if len(opts) > 0 {
+		ops := &options.OrderOptions{}
+		for _, option := range opts {
 			option(ops)
 		}
 		maps.Copy(params, ops.ToParams())
@@ -455,7 +456,7 @@ func (b *BackpackREST) CancelOrderByClientID(symbol string, clientID int) (*mode
 
 // symbol is optional
 // marketType is optional
-func (b *BackpackREST) GetOrders(symbol *string, marketType *models.MarketType) ([]*models.Order, error) {
+func (b *BackpackREST) GetOrders(symbol *string, marketType *options.MarketType) ([]*models.Order, error) {
 	path := "/api/v1/orders"
 	params := map[string]string{}
 	if symbol != nil {
@@ -467,7 +468,7 @@ func (b *BackpackREST) GetOrders(symbol *string, marketType *models.MarketType) 
 	return Response[[]*models.Order](RequestWithAuth(b, "GET", path, "orderQueryAll", params))
 }
 
-func (b *BackpackREST) CancelOrders(symbol string, marketType ...models.OrderType) ([]*models.Order, error) {
+func (b *BackpackREST) CancelOrders(symbol string, marketType ...options.OrderType) ([]*models.Order, error) {
 	path := "/api/v1/orders"
 	params := map[string]string{"symbol": symbol}
 	if len(marketType) > 0 {

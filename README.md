@@ -25,28 +25,27 @@ go get -u github.com/feeeei/backpack-go
 package main
 
 import (
-    "fmt"
-    
-    "github.com/feeeei/backpack-go"
+	backpackgo "github.com/feeeei/backpack-go"
+	"github.com/feeeei/backpack-go/rest"
 )
 
 func main() {
-    // Create a client with default settings
-    client := backpackgo.NewRESTClient()
-    
-    // Or create a client with custom settings
-    // support:
-    // - WithAPIToken(apiKey, apiSecret string)
-    // - WithBaseURL(baseURL string)
-    // - WithWindows(windows time.Duration)
-    // - WithTimeout(timeout time.Duration)
-    // - WithRetry(retry int)
-    // - WithProxy(proxy string)
-    clientWithAuth := backpackgo.NewRESTClient(
-        backpackgo.WithAPIToken("YOUR_API_KEY", "YOUR_API_SECRET"),
-    )
-    
-    // Now you can use the client to call APIs
+	// Create a client with default settings
+	client := backpackgo.NewRESTClient()
+
+	// Or create a client with custom settings
+	// support:
+	// - WithAPIToken(apiKey, apiSecret string)
+	// - WithBaseURL(baseURL string)
+	// - WithWindows(windows time.Duration)
+	// - WithTimeout(timeout time.Duration)
+	// - WithRetry(retry int)
+	// - WithProxy(proxy string)
+	clientWithAuth := backpackgo.NewRESTClient(
+		rest.WithAPIToken("YOUR_API_KEY", "YOUR_API_SECRET"),
+	)
+
+	// Now you can use the client to call APIs
 }
 ```
 
@@ -70,7 +69,7 @@ fmt.Printf("%s price: %v\n", ticker.Symbol, ticker.FirstPrice)
 // Get klines (candlestick) data
 endTime := time.Now()
 startTime := endTime.Add(-24 * time.Hour) // Last 24 hours
-klines, err := client.GetKlines("BTC_USDC", models.OneHour, startTime, endTime)
+klines, err := client.GetKlines("BTC_USDC", options.KLineInterval1h, startTime, endTime)
 if err != nil {
     // Handle error
 }
@@ -89,7 +88,7 @@ fmt.Printf("Account: %+v\n", account)
 // Place a limit order
 order, err := clientWithAuth.ExecuteLimitOrder(
     "BTC_USDC",
-    models.Buy,
+    options.Buy,
     0.001, // quantity
     50000, // price
 )
@@ -100,7 +99,7 @@ fmt.Printf("Order placed: %+v\n", order)
 
 // Get open orders
 symbol := "BTC_USDC"
-marketType := models.Spot
+marketType := options.Spot
 orders, err := clientWithAuth.GetOrders(&symbol, &marketType)
 if err != nil {
     // Handle error
@@ -129,8 +128,8 @@ func main() {
     // - WithWindows(windows time.Duration)
     // - WithProxy(proxy string)
     clientWithAuth := backpackgo.NewRESTClient(
-        backpackgo.WithAPIToken("YOUR_API_KEY", "YOUR_API_SECRET"),
-        backpackgo.WithTimeout(10 * time.Second),
+        rest.WithAPIToken("YOUR_API_KEY", "YOUR_API_SECRET"),
+        rest.WithTimeout(10 * time.Second),
     )
     
     // Now you can use the client to call APIs

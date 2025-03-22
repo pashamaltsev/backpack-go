@@ -7,6 +7,7 @@ import (
 	"time"
 
 	"github.com/feeeei/backpack-go/models"
+	"github.com/feeeei/backpack-go/options"
 	"github.com/feeeei/backpack-go/websocket"
 )
 
@@ -53,14 +54,14 @@ func TestBackpackWebsocket(t *testing.T) {
 	// test SubscribeKLine
 	t.Run("test SubscribeKLine", func(t *testing.T) {
 		wait := make(chan struct{})
-		err = client.SubscribeKLine(models.KLineInterval1m, symbol, func(kline *models.KLineUpdate) {
+		err = client.SubscribeKLine(options.KLineInterval1m, symbol, func(kline *models.KLineUpdate) {
 			wait <- struct{}{}
 		})
 		if err != nil {
 			t.Errorf("SubscribeKLine failed: %v", err)
 		} else {
 			<-wait
-			client.Unsubscribe(fmt.Sprintf("kline.%s.%s", models.KLineInterval1m, symbol))
+			client.Unsubscribe(fmt.Sprintf("kline.%s.%s", options.KLineInterval1m, symbol))
 			time.Sleep(time.Second)
 			fmt.Println("OK: SubscribeKLine")
 		}

@@ -23,17 +23,6 @@ type Market struct {
 	CreatedAt         time.Time        `json:"createdAt" time_format:"2006-01-02T15:04:05.999999"`
 }
 
-type MarketType string
-
-const (
-	SPOT       MarketType = "SPOT"
-	PERP       MarketType = "PERP"
-	IPERP      MarketType = "IPERP"
-	DATED      MarketType = "DATED"
-	PREDICTION MarketType = "PREDICTION"
-	RFQ        MarketType = "RFQ"
-)
-
 type OrderBookFilters struct {
 	Price    PriceFilter    `json:"price"`
 	Quantity QuantityFilter `json:"quantity"`
@@ -97,13 +86,6 @@ type Ticker struct {
 	Trades             int     `json:"trades,string"`
 }
 
-type TickerInterval string
-
-const (
-	OneDayTicker  TickerInterval = "1d"
-	OneWeekTicker TickerInterval = "1w"
-)
-
 type Depth struct {
 	Asks         []DepthItem `json:"asks"`
 	Bids         []DepthItem `json:"bids"`
@@ -143,20 +125,6 @@ type Kline struct {
 	QuoteVolume *float64  `json:"quoteVolume,string"`
 	Trades      *int      `json:"trades,string"`
 }
-
-type KlineInterval string
-
-const (
-	OneMinuteKline        KlineInterval = "1m"
-	ThreeMinuteKline      KlineInterval = "3m"
-	FiveMinuteKline       KlineInterval = "5m"
-	OneFifteenMinuteKline KlineInterval = "15m"
-	ThirtyMinuteKline     KlineInterval = "30m"
-	OneHourKline          KlineInterval = "1h"
-	TwoHourKline          KlineInterval = "2h"
-	FourHourKline         KlineInterval = "4h"
-	SixHourKline          KlineInterval = "6h"
-)
 
 type MarkPrice struct {
 	FundingRate          float64   `json:"fundingRate,string"`

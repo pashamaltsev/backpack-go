@@ -13,10 +13,3 @@ type BorrowLend struct {
 	NetExposureNotional float64  `json:"netExposureNotional,string"`
 	Symbol              string   `json:"symbol"`
 }
-
-type BorrowLendSide string
-
-const (
-	Borrow BorrowLendSide = "Borrow"
-	Lend   BorrowLendSide = "Lend"
-)
