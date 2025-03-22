@@ -156,5 +156,72 @@ err = client.SubscribeOrderUpdate(func(order *models.OrderUpdate) {
 })
 ```
 
+### Advanced: Custom Request
+
+#### Custom REST Request
+
+You can make custom REST requests with your own defined structures if you need to access endpoints that are not covered by the SDK or if you want more control over the request/response handling:
+
+```go
+// Define your custom response structure
+type Order struct {
+    ID        string  `json:"id"`
+    Price     float64 `json:"price"`
+    Quantity  float64 `json:"quantity"`
+    Timestamp int64   `json:"timestamp"`
+    // Add any other fields you need
+}
+
+// Make a GET request with custom path and response type
+customOrderPath := "/api/v1/custom_order"
+params := map[string]string{"param1": "value1", "param2": "value2"}
+response, err := backpackgo.Request[*Order](client, "GET", customOrderPath, params)
+if err != nil {
+    // Handle error
+}
+fmt.Printf("Custom response: %+v\n", response)
+
+// Make a POST request with custom path and payload
+postPayload := map[string]any{
+    "key1": "value1",
+    "key2": 42,
+}
+postResponse, err := backpackgo.Request[*CustomResponse](client, "POST", customPath, postPayload)
+if err != nil {
+    // Handle error
+}
+```
+
+#### Custom WebSocket Request
+
+For WebSocket, you can subscribe to custom stream or handle custom message formats:
+
+```go
+// Define your custom message structure
+type CustomWSMessage struct {
+    EventType string  `json:"e"`
+    Symbol    string  `json:"s"`
+    Value     float64 `json:"v"`
+    // Add any other fields you need
+}
+
+// Subscribe to a custom stream with your handler
+customStream := "custom.stream.name"
+err = client.SubscribePublicStream(customStream, new(CustomWSMessage), func(msg *CustomWSMessage) {
+    fmt.Printf("Received custom message: %+v\n", msg)
+})
+if err != nil {
+    fmt.Errorf("subscribe custom stream failed: %+v", err)
+}
+
+// For authenticated streams
+err = client.SubscribePrivateStream(customStream, new(CustomWSMessage), func(msg *CustomWSMessage) {
+    fmt.Printf("Received custom auth message: %+v\n", msg)
+})
+```
+
+This flexibility allows you to work with new API endpoints or custom implementations without waiting for SDK updates.
+
+
 ## License
 feeeei/backpack-go is released under the [MIT License](https://opensource.org/licenses/MIT).
