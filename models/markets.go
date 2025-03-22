@@ -4,23 +4,24 @@ import (
 	"net/http"
 	"strconv"
 
+	"github.com/feeeei/backpack-go/options"
 	json "github.com/json-iterator/go"
 
 	"time"
 )
 
 type Market struct {
-	Symbol            string           `json:"symbol"`
-	BaseSymbol        string           `json:"baseSymbol"`
-	QuoteSymbol       string           `json:"quoteSymbol"`
-	MarketType        MarketType       `json:"marketType"`
-	Filters           OrderBookFilters `json:"filters"`
-	IMFFunction       Function         `json:"imfFunction"`
-	MMFFunction       Function         `json:"mmfFunction"`
-	FundingInterval   *int64           `json:"fundingInterval"`
-	OpenInterestLimit *float64         `json:"openInterestLimit,string"`
-	OrderBookState    OrderBookState   `json:"orderBookState"`
-	CreatedAt         time.Time        `json:"createdAt" time_format:"2006-01-02T15:04:05.999999"`
+	Symbol            string             `json:"symbol"`
+	BaseSymbol        string             `json:"baseSymbol"`
+	QuoteSymbol       string             `json:"quoteSymbol"`
+	MarketType        options.MarketType `json:"marketType"`
+	Filters           OrderBookFilters   `json:"filters"`
+	IMFFunction       Function           `json:"imfFunction"`
+	MMFFunction       Function           `json:"mmfFunction"`
+	FundingInterval   *int64             `json:"fundingInterval"`
+	OpenInterestLimit *float64           `json:"openInterestLimit,string"`
+	OrderBookState    OrderBookState     `json:"orderBookState"`
+	CreatedAt         time.Time          `json:"createdAt" time_format:"2006-01-02T15:04:05.999999"`
 }
 
 type OrderBookFilters struct {

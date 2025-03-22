@@ -7,7 +7,7 @@ import (
 )
 
 type Order struct {
-	OrderType              OrderType                       `json:"orderType"`
+	OrderType              options.OrderType               `json:"orderType"`
 	ID                     string                          `json:"id"`
 	ClientID               *int                            `json:"clientId"`
 	CreatedAt              time.Time                       `json:"createdAt" time_format:"unix"`

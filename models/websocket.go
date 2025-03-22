@@ -16,7 +16,7 @@ type OrderUpdate struct {
 	Symbol                  string                          `json:"s"`
 	ClientOrderID           int64                           `json:"c"`
 	Side                    options.Side                    `json:"S"`
-	OrderType               OrderType                       `json:"o"`
+	OrderType               options.OrderType               `json:"o"`
 	TimeInForce             options.TimeInForce             `json:"f"`
 	Quantity                float64                         `json:"q,string"`
 	QuantityInQuote         float64                         `json:"Q,string"`

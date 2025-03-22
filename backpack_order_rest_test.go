@@ -6,6 +6,7 @@ import (
 	"testing"
 
 	"github.com/feeeei/backpack-go/models"
+	"github.com/feeeei/backpack-go/options"
 	"github.com/feeeei/backpack-go/rest"
 )
 
@@ -18,7 +19,7 @@ func TestBackpackOrderREST(t *testing.T) {
 	// test ExecuteOrder
 	t.Run("test ExecuteOrder", func(t *testing.T) {
 		var err error
-		order, err = rest.ExecuteLimitOrder(symbol, models.Buy, 1, 10)
+		order, err = rest.ExecuteLimitOrder(symbol, options.Buy, 1, 10)
 		if err != nil {
 			t.Errorf("ExecuteOrder failed: %v", err)
 		} else {

@@ -6,6 +6,7 @@ import (
 	"testing"
 
 	"github.com/feeeei/backpack-go/models"
+	"github.com/feeeei/backpack-go/options"
 	"github.com/feeeei/backpack-go/rest"
 	"github.com/feeeei/backpack-go/utils"
 )
@@ -51,7 +52,7 @@ func TestBackpackAuthREST(t *testing.T) {
 
 	// test GetAccountMaxOrder
 	t.Run("test GetAccountMaxOrder", func(t *testing.T) {
-		orderLimit, err := rest.GetAccountMaxOrder(symbol, models.Ask)
+		orderLimit, err := rest.GetAccountMaxOrder(symbol, options.Ask)
 		if err != nil {
 			t.Errorf("GetAccountMaxOrder failed: %v", err)
 		} else {
@@ -61,7 +62,7 @@ func TestBackpackAuthREST(t *testing.T) {
 
 	// test GetAccountMaxWithdrawal
 	t.Run("test GetAccountMaxWithdrawal", func(t *testing.T) {
-		withdrawalLimit, err := rest.GetAccountMaxWithdrawal(asset, models.AccountWithdrawalLimitOptions{
+		withdrawalLimit, err := rest.GetAccountMaxWithdrawal(asset, options.AccountWithdrawalLimitOptions{
 			AutoBorrow: utils.Ptr(true),
 		})
 		if err != nil {
@@ -83,7 +84,7 @@ func TestBackpackAuthREST(t *testing.T) {
 
 	// test ExecuteBorrowLend
 	t.Run("test ExecuteBorrowLend", func(t *testing.T) {
-		err := rest.ExecuteBorrowLend(asset, models.Lend, 1)
+		err := rest.ExecuteBorrowLend(asset, options.Lend, 1)
 		if err != nil {
 			t.Errorf("ExecuteBorrowLend failed: %v", err)
 		} else {

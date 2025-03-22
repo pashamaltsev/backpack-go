@@ -106,7 +106,7 @@ type OrderHistory struct {
 	ExecutedQuantity       *float64                        `json:"executedQuantity,string"`
 	ExecutedQuoteQuantity  *float64                        `json:"executedQuoteQuantity,string"`
 	ExpiryReason           *OrderExpiryReason              `json:"expiryReason"`
-	OrderType              OrderType                       `json:"orderType"`
+	OrderType              options.OrderType               `json:"orderType"`
 	PostOnly               *bool                           `json:"postOnly"`
 	Price                  *float64                        `json:"price,string"`
 	Quantity               *float64                        `json:"quantity,string"`
