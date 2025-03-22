@@ -12,28 +12,32 @@ import (
 )
 
 func auth(apikey, secret string, payload map[string]any, instruction string, timestamp, window int64) (map[string]string, error) {
+	signature, err := sign(secret, payload, instruction, timestamp, window)
+	if err == nil {
+		head := map[string]string{
+			"X-API-Key":   apikey,
+			"X-Signature": signature,
+			"X-Timestamp": fmt.Sprintf("%d", timestamp),
+			"X-Window":    fmt.Sprintf("%d", window),
+		}
+		return head, nil
+	} else {
+		return nil, err
+	}
+}
+
+func sign(secret string, payload map[string]any, instruction string, timestamp, window int64) (string, error) {
 	sign := fmt.Sprintf("instruction=%s&{payload}timestamp=%d&window=%d", instruction, timestamp, window)
 	sign = strings.ReplaceAll(sign, "{payload}", sortPayload(payload))
 
 	// Sign the string using the private key
 	privateKeyBytes, err := base64.StdEncoding.DecodeString(secret)
 	if err != nil {
-		return nil, err
+		return "", err
 	}
 	privateKey := ed25519.NewKeyFromSeed(privateKeyBytes)
 	signature := ed25519.Sign(privateKey, utils.StringToBytes(sign))
-
-	// Encode the signature in base64
-	signatureB64 := base64.StdEncoding.EncodeToString(signature)
-
-	head := map[string]string{
-		"X-API-Key":   apikey,
-		"X-Signature": signatureB64,
-		"X-Timestamp": fmt.Sprintf("%d", timestamp),
-		"X-Window":    fmt.Sprintf("%d", window),
-	}
-
-	return head, nil
+	return base64.StdEncoding.EncodeToString(signature), nil
 }
 
 func sortPayload(payload map[string]any) string {

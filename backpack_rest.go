@@ -9,6 +9,7 @@ import (
 
 	"github.com/feeeei/backpack-go/constants"
 	"github.com/feeeei/backpack-go/models"
+	"github.com/feeeei/backpack-go/rest"
 	"github.com/feeeei/backpack-go/utils"
 	json "github.com/json-iterator/go"
 	"github.com/liamylian/jsontime/v3"
@@ -27,8 +28,8 @@ func init() {
 	json.RegisterExtension(jsontime.NewCustomTimeExtension())
 }
 
-func NewRESTClient(options ...Options) *BackpackREST {
-	opts := defaultRESTOptions()
+func NewRESTClient(options ...rest.Options) *BackpackREST {
+	opts := rest.DefaultRESTOptions()
 	client := resty.New().
 		SetBaseURL(opts.BaseURL).
 		SetResponseMiddlewares(handleError).

@@ -9,7 +9,7 @@ import (
 	"github.com/feeeei/backpack-go/utils"
 )
 
-func TestBackpackREST(t *testing.T) {
+func TestBackpackPublicREST(t *testing.T) {
 	rest := NewRESTClient()
 
 	symbol := "BTC_USDC"

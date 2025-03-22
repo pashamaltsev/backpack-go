@@ -6,11 +6,12 @@ import (
 	"testing"
 
 	"github.com/feeeei/backpack-go/models"
+	"github.com/feeeei/backpack-go/rest"
 	"github.com/feeeei/backpack-go/utils"
 )
 
 func TestBackpackAuthREST(t *testing.T) {
-	rest := NewRESTClient(WithAPIToken(os.Getenv("API_KEY"), os.Getenv("API_SECRET")))
+	rest := NewRESTClient(rest.WithAPIToken(os.Getenv("API_KEY"), os.Getenv("API_SECRET")))
 
 	symbol := "BTC_USDC"
 	asset := "USDC"

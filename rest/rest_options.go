@@ -1,4 +1,4 @@
-package backpackgo
+package rest
 
 import (
 	"time"
@@ -53,7 +53,7 @@ func WithProxy(proxy string) Options {
 	}
 }
 
-func defaultRESTOptions() *options {
+func DefaultRESTOptions() *options {
 	return &options{
 		BaseURL: constants.RESTBaseURL,
 		Windows: constants.DefaultWindows,

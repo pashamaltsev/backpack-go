@@ -6,8 +6,8 @@ A Go SDK for Backpack Exchange, API Docs: <a href="https://docs.backpack.exchang
 
 - ✅ Public REST API
 - ✅ Authenticated APIs Example
-- ☑️ Public Websocket API
-- ☑️ Authenticated Websocket API
+- ✅ Public Websocket API
+- ✅ Authenticated Websocket API
 
 ## Installation
 
@@ -19,7 +19,7 @@ go get -u github.com/feeeei/backpack-go
 
 ## Usage
 
-### Initialize the client
+### Initialize the REST client
 
 ```go
 package main
@@ -52,7 +52,7 @@ func main() {
 }
 ```
 
-### Public APIs Example
+### Public REST APIs Example
 
 ```go
 // Get market data
@@ -78,7 +78,7 @@ if err != nil {
 }
 ```
 
-### Authenticated APIs Example
+### Authenticated REST APIs Example
 
 ```go
 // Get account information (requires authentication)
@@ -108,6 +108,52 @@ if err != nil {
     // Handle error
 }
 fmt.Printf("Open orders: %d\n", len(orders))
+```
+
+### Initialize the Websocket client
+```go
+package main
+
+import (
+    "fmt"
+    
+    "github.com/feeeei/backpack-go"
+)
+
+func main() {
+    // Create a client with default settings
+    client := backpackgo.NewRESTClient()
+    
+    // Or create a client with custom settings
+    // support:
+    // - WithAPIToken(apiKey, apiSecret string)
+    // - WithBaseURL(baseURL string)
+    // - WithWindows(windows time.Duration)
+    // - WithProxy(proxy string)
+    clientWithAuth := backpackgo.NewRESTClient(
+        backpackgo.WithAPIToken("YOUR_API_KEY", "YOUR_API_SECRET"),
+        backpackgo.WithTimeout(10 * time.Second),
+    )
+    
+    // Now you can use the client to call APIs
+}
+```
+
+### Websocket APIs Example
+```go
+err = client.SubscribeTrade(symbol, func(trade *models.TradeUpdate) {
+    fmt.Println(tade)
+})
+if err != nil {
+    fmt.Errorf("subscribe trade faild: %+v", err)
+}
+
+_ = client.Unsubscribe(fmt.Sprintf("trade.%s", symbol+"_PERP"))
+
+// should With API_KEY & API_SECRET
+err = client.SubscribeOrderUpdate(func(order *models.OrderUpdate) {
+    fmt.Println(order)
+})
 ```
 
 ## License
