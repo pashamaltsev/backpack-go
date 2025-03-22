@@ -366,62 +366,77 @@ func (b *BackpackREST) GetOrderByOrderID(symbol, orderID string) (*models.Order,
 	return Response[*models.Order](RequestWithAuth(b, "GET", url, "orderQuery", params))
 }
 
-func (b *BackpackREST) ExecuteMarketOrder(symbol string, side models.Side, quantity float64, options ...models.OrderOptions) (*models.Order, error) {
+// ExecuteMarketOrder executes a market order
+// symbol: Trading pair (e.g. "BTC_USDC")
+// side: Bid/Buy or Ask/Sell
+// quantity: The amount to trade
+// options: Optional parameters like clientId, timeInForce etc.
+func (b *BackpackREST) ExecuteMarketOrder(symbol string, side models.Side, quantity float64, options ...models.OrderOption) (*models.Order, error) {
 	path := "/api/v1/order"
-	params := map[string]string{
-		"orderType": string(models.OrderTypeMarket),
+	params := map[string]any{
+		"orderType": models.OrderTypeMarket,
 		"symbol":    symbol,
-		"side":      string(side),
+		"side":      side,
 		"quantity":  fmt.Sprintf("%f", quantity),
 	}
 	if len(options) > 0 {
-		maps.Copy(params, utils.StructToMap[map[string]string](options[0]))
+		ops := &models.OrderOptions{}
+		for _, option := range options {
+			option(ops)
+		}
+		maps.Copy(params, ops.ToParams())
 	}
 	return Response[*models.Order](RequestWithAuth(b, "POST", path, "orderExecute", params))
 }
 
-func (b *BackpackREST) ExecuteLimitOrder(symbol string, side models.Side, quantity float64, price float64, options ...models.OrderOptions) (*models.Order, error) {
+// ExecuteLimitOrder executes a limit order
+// symbol: Trading pair (e.g. "BTC_USDC")
+// side: Bid/Buy or Ask/Sell
+// price: The limit price
+// quantity: The amount to trade
+// options: Optional parameters like clientId, timeInForce etc.
+func (b *BackpackREST) ExecuteLimitOrder(symbol string, side models.Side, price float64, quantity float64, options ...models.OrderOption) (*models.Order, error) {
 	path := "/api/v1/order"
-	params := map[string]string{
-		"orderType": string(models.OrderTypeLimit),
+	params := map[string]any{
+		"orderType": models.OrderTypeLimit,
 		"symbol":    symbol,
-		"side":      string(side),
-		"quantity":  fmt.Sprintf("%f", quantity),
+		"side":      side,
 		"price":     fmt.Sprintf("%f", price),
-	}
-	if len(options) > 0 {
-		maps.Copy(params, utils.StructToMap[map[string]string](options[0]))
-	}
-	return Response[*models.Order](RequestWithAuth(b, "POST", path, "orderExecute", params))
-}
-
-func (b *BackpackREST) ExecuteStopMarketOrder(symbol string, side models.Side, quantity float64, price float64, options ...models.OrderOptions) (*models.Order, error) {
-	path := "/api/v1/order"
-	params := map[string]string{
-		"orderType": string(models.OrderTypeStopMarket),
-		"symbol":    symbol,
-		"side":      string(side),
 		"quantity":  fmt.Sprintf("%f", quantity),
-		"price":     fmt.Sprintf("%f", price),
 	}
 	if len(options) > 0 {
-		maps.Copy(params, utils.StructToMap[map[string]string](options[0]))
+		ops := &models.OrderOptions{}
+		for _, option := range options {
+			option(ops)
+		}
+		maps.Copy(params, ops.ToParams())
 	}
 	return Response[*models.Order](RequestWithAuth(b, "POST", path, "orderExecute", params))
 }
 
-func (b *BackpackREST) ExecuteStopLimitOrder(symbol string, side models.Side, quantity float64, price, triggerPrice float64, options ...models.OrderOptions) (*models.Order, error) {
+// ExecuteConditionalLimitOrder executes a conditional limit order (stop limit order)
+// symbol: Trading pair (e.g. "BTC_USDC")
+// side: Bid/Buy or Ask/Sell
+// triggerPrice: The price at which the limit order will be triggered
+// price: The limit price after trigger
+// quantity: The amount to trade
+// options: Optional parameters like clientId, timeInForce etc.
+func (b *BackpackREST) ExecuteConditionalLimitOrder(symbol string, side models.Side, triggerPrice float64, price float64, quantity float64, options ...models.OrderOption) (*models.Order, error) {
 	path := "/api/v1/order"
-	params := map[string]string{
-		"orderType":    string(models.OrderTypeStopLimit),
-		"symbol":       symbol,
-		"side":         string(side),
-		"quantity":     fmt.Sprintf("%f", quantity),
-		"price":        fmt.Sprintf("%f", price),
-		"triggerPrice": fmt.Sprintf("%f", triggerPrice),
+	params := map[string]any{
+		"orderType":       models.OrderTypeLimit,
+		"symbol":          symbol,
+		"side":            side,
+		"triggerQuantity": fmt.Sprintf("%f", quantity),
+		"price":           fmt.Sprintf("%f", price),
+		"triggerPrice":    fmt.Sprintf("%f", triggerPrice),
 	}
 	if len(options) > 0 {
-		maps.Copy(params, utils.StructToMap[map[string]string](options[0]))
+		ops := &models.OrderOptions{}
+		for _, option := range options {
+			option(ops)
+		}
+		maps.Copy(params, ops.ToParams())
 	}
 	return Response[*models.Order](RequestWithAuth(b, "POST", path, "orderExecute", params))
 }

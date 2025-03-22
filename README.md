@@ -44,8 +44,6 @@ func main() {
     // - WithProxy(proxy string)
     clientWithAuth := backpackgo.NewRESTClient(
         backpackgo.WithAPIToken("YOUR_API_KEY", "YOUR_API_SECRET"),
-        backpackgo.WithTimeout(10 * time.Second),
-        backpackgo.WithRetry(3),
     )
     
     // Now you can use the client to call APIs

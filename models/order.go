@@ -1,6 +1,10 @@
 package models
 
-import "time"
+import (
+	"time"
+
+	"github.com/feeeei/backpack-go/utils"
+)
 
 type Order struct {
 	OrderType              OrderType               `json:"orderType"`
@@ -41,10 +45,8 @@ const (
 type OrderType string
 
 const (
-	OrderTypeMarket     OrderType = "Market"
-	OrderTypeLimit      OrderType = "Limit"
-	OrderTypeStopMarket OrderType = "StopMarket"
-	OrderTypeStopLimit  OrderType = "StopLimit"
+	OrderTypeMarket OrderType = "Market"
+	OrderTypeLimit  OrderType = "Limit"
 )
 
 type SelfTradePreventionType string
@@ -76,19 +78,137 @@ const (
 )
 
 type OrderOptions struct {
-	AutoLend               *bool                    `json:"autoLend"`
-	AutoLendRedeem         *bool                    `json:"autoLendRedeem"`
-	AutoBorrow             *bool                    `json:"autoBorrow"`
-	AutoBorrowRepay        *bool                    `json:"autoBorrowRepay"`
-	ClientID               *int32                   `json:"clientId"`
-	PostOnly               *bool                    `json:"postOnly"`
-	ReduceOnly             *bool                    `json:"reduceOnly"`
-	SelfTradePrevention    *SelfTradePreventionType `json:"selfTradePrevention"`
-	StopLossLimitPrice     *float64                 `json:"stopLossLimitPrice,string"`
-	StopLossTriggerPrice   *float64                 `json:"stopLossTriggerPrice,string"`
-	TakeProfitLimitPrice   *float64                 `json:"takeProfitLimitPrice,string"`
-	TakeProfitTriggerPrice *float64                 `json:"takeProfitTriggerPrice,string"`
-	TimeInForce            *TimeInForce             `json:"timeInForce"`
-	TriggerPrice           *float64                 `json:"triggerPrice,string"`
-	TriggerQuantity        *float64                 `json:"triggerQuantity,string"`
+	Quantity               *float64                 `json:"quantity,string,omitempty"`
+	AutoLend               *bool                    `json:"autoLend,omitempty"`
+	AutoLendRedeem         *bool                    `json:"autoLendRedeem,omitempty"`
+	AutoBorrow             *bool                    `json:"autoBorrow,omitempty"`
+	AutoBorrowRepay        *bool                    `json:"autoBorrowRepay,omitempty"`
+	ClientID               *int32                   `json:"clientId,omitempty"`
+	PostOnly               *bool                    `json:"postOnly,omitempty"`
+	ReduceOnly             *bool                    `json:"reduceOnly,omitempty"`
+	SelfTradePrevention    *SelfTradePreventionType `json:"selfTradePrevention,omitempty"`
+	StopLossLimitPrice     *float64                 `json:"stopLossLimitPrice,string,omitempty"`
+	StopLossTriggerPrice   *float64                 `json:"stopLossTriggerPrice,string,omitempty"`
+	TakeProfitLimitPrice   *float64                 `json:"takeProfitLimitPrice,string,omitempty"`
+	TakeProfitTriggerPrice *float64                 `json:"takeProfitTriggerPrice,string,omitempty"`
+	TimeInForce            *TimeInForce             `json:"timeInForce,omitempty"`
+	TriggerPrice           *float64                 `json:"triggerPrice,string,omitempty"`
+	TriggerQuantity        *float64                 `json:"triggerQuantity,string,omitempty"`
+}
+
+func (o *OrderOptions) ToParams() map[string]any {
+	return utils.StructToMap[map[string]any](o)
+}
+
+type OrderOption func(*OrderOptions)
+
+func WithQuantity(quantity float64) OrderOption {
+	return func(o *OrderOptions) {
+		o.Quantity = &quantity
+	}
+}
+
+func WithTrigger(price, quantity float64) OrderOption {
+	return func(o *OrderOptions) {
+		o.TriggerPrice = &price
+		o.TriggerQuantity = &quantity
+	}
+}
+
+func WithStopLoss(triggerPrice, limitPrice float64) OrderOption {
+	return func(o *OrderOptions) {
+		o.StopLossLimitPrice = &limitPrice
+		o.StopLossTriggerPrice = &triggerPrice
+	}
+}
+
+func WithTakeProfit(triggerPrice, limitPrice float64) OrderOption {
+	return func(o *OrderOptions) {
+		o.TakeProfitTriggerPrice = &triggerPrice
+		o.TakeProfitLimitPrice = &limitPrice
+	}
+}
+
+func WithAutoLend(autoLend bool) OrderOption {
+	return func(o *OrderOptions) {
+		o.AutoLend = &autoLend
+	}
+}
+
+func WithAutoLendRedeem(autoLendRedeem bool) OrderOption {
+	return func(o *OrderOptions) {
+		o.AutoLendRedeem = &autoLendRedeem
+	}
+}
+
+func WithAutoBorrow(autoBorrow bool) OrderOption {
+	return func(o *OrderOptions) {
+		o.AutoBorrow = &autoBorrow
+	}
+}
+
+func WithAutoBorrowRepay(autoBorrowRepay bool) OrderOption {
+	return func(o *OrderOptions) {
+		o.AutoBorrowRepay = &autoBorrowRepay
+	}
+}
+
+func WithClientID(clientID int32) OrderOption {
+	return func(o *OrderOptions) {
+		o.ClientID = &clientID
+	}
+}
+
+func WithPostOnly(postOnly bool) OrderOption {
+	return func(o *OrderOptions) {
+		o.PostOnly = &postOnly
+	}
+}
+
+func WithReduceOnly(reduceOnly bool) OrderOption {
+	return func(o *OrderOptions) {
+		o.ReduceOnly = &reduceOnly
+	}
+}
+
+func WithSelfTradePrevention(selfTradePrevention SelfTradePreventionType) OrderOption {
+	return func(o *OrderOptions) {
+		o.SelfTradePrevention = &selfTradePrevention
+	}
+}
+
+func WithStopLossTriggerPrice(stopLossTriggerPrice float64) OrderOption {
+	return func(o *OrderOptions) {
+		o.StopLossTriggerPrice = &stopLossTriggerPrice
+	}
+}
+
+func WithTakeProfitLimitPrice(takeProfitLimitPrice float64) OrderOption {
+	return func(o *OrderOptions) {
+		o.TakeProfitLimitPrice = &takeProfitLimitPrice
+	}
+}
+
+func WithTakeProfitTriggerPrice(takeProfitTriggerPrice float64) OrderOption {
+	return func(o *OrderOptions) {
+		o.TakeProfitTriggerPrice = &takeProfitTriggerPrice
+	}
+}
+
+func WithTimeInForce(timeInForce TimeInForce) OrderOption {
+	return func(o *OrderOptions) {
+		o.TimeInForce = &timeInForce
+	}
+}
+
+func WithTriggerPrice(triggerPrice float64) OrderOption {
+	return func(o *OrderOptions) {
+		o.TriggerPrice = &triggerPrice
+	}
+}
+
+func WithTriggerQuantity(triggerQuantity float64) OrderOption {
+	return func(o *OrderOptions) {
+		o.TriggerQuantity = &triggerQuantity
+	}
 }
