@@ -115,6 +115,14 @@ func TestBackpackWebsocket(t *testing.T) {
 		}
 	})
 
+	// test SubscribeOpenInterest
+	t.Run("test SubscribeOpenInterest", func(t *testing.T) {
+		wait := make(chan struct{})
+		err = client.SubscribeOpenInterest(symbol, func(openInterest *models.OpenInterestUpdate) {
+			wait <- struct{}{}
+		})
+	})
+
 	// test SubscribeTrade
 	t.Run("test SubscribeTrade", func(t *testing.T) {
 		wait := make(chan struct{})

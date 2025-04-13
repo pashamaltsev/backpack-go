@@ -182,16 +182,15 @@ func TestBackpackAuthREST(t *testing.T) {
 		}
 	})
 
-	// TODO: waiting for API stable
-	// // test GetBorrowPositionsHistory
-	// t.Run("test GetBorrowPositionsHistory", func(t *testing.T) {
-	// 	history, err := rest.GetBorrowPositionsHistory()
-	// 	if err != nil {
-	// 		t.Errorf("GetBorrowPositionsHistory failed: %v", err)
-	// 	} else {
-	// 		fmt.Printf("OK: GetBorrowPositionsHistory, history count: %+v\n\n", len(history))
-	// 	}
-	// })
+	// test GetBorrowPositionsHistory
+	t.Run("test GetBorrowPositionsHistory", func(t *testing.T) {
+		history, err := rest.GetBorrowPositionsHistory()
+		if err != nil {
+			t.Errorf("GetBorrowPositionsHistory failed: %v", err)
+		} else {
+			fmt.Printf("OK: GetBorrowPositionsHistory, history count: %+v\n\n", len(history))
+		}
+	})
 
 	// test GetFillHistory
 	t.Run("test GetFillHistory", func(t *testing.T) {

@@ -98,6 +98,10 @@ func (client *BackpackWebsocket) SubscribeTicker(symbol string, handler func(*mo
 	return SubscribePublicStream(client, fmt.Sprintf("ticker.%s", symbol), new(models.TickerUpdate), handler)
 }
 
+func (client *BackpackWebsocket) SubscribeOpenInterest(symbol string, handler func(*models.OpenInterestUpdate)) error {
+	return SubscribePublicStream(client, fmt.Sprintf("openInterest.%s", symbol), new(models.OpenInterestUpdate), handler)
+}
+
 func (client *BackpackWebsocket) SubscribeTrade(symbol string, handler func(*models.TradeUpdate)) error {
 	return SubscribePublicStream(client, fmt.Sprintf("trade.%s", symbol), new(models.TradeUpdate), handler)
 }

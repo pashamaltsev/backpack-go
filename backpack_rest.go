@@ -300,15 +300,14 @@ func (b *BackpackREST) GetInterestHistory(options ...options.InterestHistoryOpti
 	return Response[[]*models.InterestHistory](RequestWithAuth(b, "GET", path, "interestHistoryQueryAll", params))
 }
 
-// TODO: Can't yet query that with a signed request, unknown instruction
-// func (b *BackpackREST) GetBorrowPositionsHistory(options ...options.BorrowPostionHistoryOptions) ([]*models.BorrowPositionHistory, error) {
-// 	path := "/wapi/v1/history/borrowLend/positions"
-// 	params := map[string]string{}
-// 	if len(options) > 0 {
-// 		params = utils.StructToMap[map[string]string](options[0])
-// 	}
-// 	return Response[[]*models.BorrowPositionHistory](RequestWithAuth(b, "GET", path, "borrowLendPositionsQueryAll", params))
-// }
+func (b *BackpackREST) GetBorrowPositionsHistory(options ...options.BorrowPostionHistoryOptions) ([]*models.BorrowPositionHistory, error) {
+	path := "/wapi/v1/history/borrowLend/positions"
+	params := map[string]string{}
+	if len(options) > 0 {
+		params = utils.StructToMap[map[string]string](options[0])
+	}
+	return Response[[]*models.BorrowPositionHistory](RequestWithAuth(b, "GET", path, "borrowPositionHistoryQueryAll", params))
+}
 
 func (b *BackpackREST) GetFillHistory(options ...options.FillHistoryOptions) ([]*models.FillHistory, error) {
 	path := "/wapi/v1/history/fills"
@@ -535,6 +534,7 @@ func Response[T any](response *resty.Response, e error) (result T, err error) {
 		return result, e
 	}
 
+	fmt.Println(string(response.Bytes()))
 	err = json.Unmarshal(response.Bytes(), &result)
 	return
 }

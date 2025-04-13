@@ -182,6 +182,17 @@ func (u *TickerUpdate) New() any {
 	return &TickerUpdate{}
 }
 
+type OpenInterestUpdate struct {
+	EventType    string    `json:"e"`
+	EventTime    time.Time `json:"E" time_format:"unixmicro"`
+	Symbol       string    `json:"s"`
+	OpenInterest float64   `json:"o,string"`
+}
+
+func (u *OpenInterestUpdate) New() any {
+	return &OpenInterestUpdate{}
+}
+
 type TradeUpdate struct {
 	EventType     string    `json:"e"`
 	EventTime     time.Time `json:"E" time_format:"unixmicro"`
