@@ -2,7 +2,7 @@
 
 A Go SDK for Backpack Exchange, API Docs: <a href="https://docs.backpack.exchange/" target="_blank">backpack API docs</a>
 
-> Support Backpack API version: `2025-04-08`
+> Support Backpack API version: `2025-04-22`
 
 - ✅ Public REST API
 - ✅ Authenticated APIs Example
