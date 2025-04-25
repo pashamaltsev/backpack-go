@@ -5,7 +5,7 @@ import (
 	"net/url"
 	"time"
 
-	"github.com/feeeei/backpack-go/constants"
+	"github.com/UnipayFI/backpack-go/constants"
 	"github.com/gorilla/websocket"
 )
 

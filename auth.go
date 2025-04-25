@@ -8,7 +8,7 @@ import (
 	"sort"
 	"strings"
 
-	"github.com/feeeei/backpack-go/utils"
+	"github.com/UnipayFI/backpack-go/utils"
 )
 
 func auth(apikey, secret string, payload map[string]any, instruction string, timestamp, window int64) (map[string]string, error) {

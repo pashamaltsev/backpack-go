@@ -1,6 +1,6 @@
 package models
 
-import "github.com/feeeei/backpack-go/options"
+import "github.com/UnipayFI/backpack-go/options"
 
 type Account struct {
 	AccountUpdateble

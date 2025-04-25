@@ -5,8 +5,8 @@ import (
 	"os"
 	"testing"
 
-	"github.com/feeeei/backpack-go/options"
-	"github.com/feeeei/backpack-go/rest"
+	"github.com/UnipayFI/backpack-go/options"
+	"github.com/UnipayFI/backpack-go/rest"
 )
 
 func TestBackpackExecuteOrder(t *testing.T) {

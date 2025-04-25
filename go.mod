@@ -1,4 +1,4 @@
-module github.com/feeeei/backpack-go
+module github.com/UnipayFI/backpack-go
 
 go 1.24.0
 

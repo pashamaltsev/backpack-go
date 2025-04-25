@@ -3,7 +3,7 @@ package rest
 import (
 	"time"
 
-	"github.com/feeeei/backpack-go/constants"
+	"github.com/UnipayFI/backpack-go/constants"
 	"resty.dev/v3"
 )
 

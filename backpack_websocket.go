@@ -5,9 +5,9 @@ import (
 	"strings"
 	"time"
 
-	"github.com/feeeei/backpack-go/models"
-	"github.com/feeeei/backpack-go/options"
-	ops "github.com/feeeei/backpack-go/websocket"
+	"github.com/UnipayFI/backpack-go/models"
+	"github.com/UnipayFI/backpack-go/options"
+	ops "github.com/UnipayFI/backpack-go/websocket"
 	"github.com/gorilla/websocket"
 	jsoniter "github.com/json-iterator/go"
 )
