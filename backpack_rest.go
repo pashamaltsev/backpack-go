@@ -534,7 +534,6 @@ func Response[T any](response *resty.Response, e error) (result T, err error) {
 		return result, e
 	}
 
-	fmt.Println(string(response.Bytes()))
 	err = json.Unmarshal(response.Bytes(), &result)
 	return
 }

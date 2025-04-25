@@ -140,7 +140,6 @@ func SubscribePublicStream[T any](client *BackpackWebsocket, stream string, newa
 func (client *BackpackWebsocket) loop() {
 	for {
 		_, message, err := client.conn.ReadMessage()
-		fmt.Println("message: ", string(message))
 		if err != nil {
 			return
 		}
