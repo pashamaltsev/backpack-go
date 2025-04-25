@@ -17,7 +17,7 @@ const (
 	FillTypeBackstop                               FillType = "Backstop"
 	FillTypeLiquidation                            FillType = "Liquidation"
 	FillTypeAllLiquidation                         FillType = "AllLiquidation"
-	FillTypeCoLiquidation                          FillType = "CoLiquidation"
+	FillTypeCollateralConversion                   FillType = "CollateralConversion"
 	FillTypeCollateralConversionAndSpotLiquidation FillType = "CollateralConversionAndSpotLiquidation"
 )
 
