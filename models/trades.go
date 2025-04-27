@@ -7,6 +7,6 @@ type Trade struct {
 	Price         float64   `json:"price,string"`
 	Quantity      float64   `json:"quantity,string"`
 	QuoteQuantity float64   `json:"quoteQuantity,string"`
-	Timestamp     time.Time `json:"timestamp" time_format:"unixmilli"`
+	Timestamp     time.Time `json:"timestamp,format:unixmilli"`
 	IsBuyerMaker  bool      `json:"isBuyerMaker"`
 }

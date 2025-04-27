@@ -10,7 +10,7 @@ type Order struct {
 	OrderType              options.OrderType               `json:"orderType"`
 	ID                     string                          `json:"id"`
 	ClientID               *int                            `json:"clientId"`
-	CreatedAt              time.Time                       `json:"createdAt" time_format:"unix"`
+	CreatedAt              time.Time                       `json:"createdAt,format:unixmilli"`
 	ExecutedQuantity       float64                         `json:"executedQuantity,string"`
 	ExecutedQuoteQuantity  float64                         `json:"executedQuoteQuantity,string"`
 	Quantity               *float64                        `json:"quantity,string"`
@@ -30,7 +30,7 @@ type Order struct {
 	TriggerBy              *float64                        `json:"triggerBy,string"`
 	TriggerPrice           *float64                        `json:"triggerPrice,string"`
 	TriggerQuantity        *float64                        `json:"triggerQuantity,string"`
-	TriggeredAt            *time.Time                      `json:"triggeredAt" time_format:"unix"`
+	TriggeredAt            *time.Time                      `json:"triggeredAt,format:unixmilli"`
 }
 
 type OrderStatus string

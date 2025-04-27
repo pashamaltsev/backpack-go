@@ -6,7 +6,6 @@ import (
 	"time"
 
 	"github.com/UnipayFI/backpack-go/options"
-	"github.com/UnipayFI/backpack-go/utils"
 )
 
 func TestBackpackPublicREST(t *testing.T) {
@@ -178,7 +177,7 @@ func TestBackpackPublicREST(t *testing.T) {
 
 	// test GetTrades
 	t.Run("test GetTrades", func(t *testing.T) {
-		trades, err := rest.GetTrades(symbol, options.LimitOffset{Limit: utils.Ptr(100)})
+		trades, err := rest.GetTrades(symbol, options.LimitOffset{Limit: 100})
 		if err != nil {
 			t.Errorf("GetTrades failed: %v", err)
 		} else {

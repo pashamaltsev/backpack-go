@@ -22,7 +22,7 @@ type BorrowLendMarket struct {
 	OpenBorrowLendLimit          float64               `json:"openBorrowLendLimit,string"`
 	OptimalUtilization           float64               `json:"optimalUtilization,string"`
 	Symbol                       string                `json:"symbol"`
-	Timestamp                    time.Time             `json:"timestamp" time_format:"RFC3339Nano"`
+	Timestamp                    time.Time             `json:"timestamp,format:RFC3339Nano"`
 	ThrottleUtilizationThreshold float64               `json:"throttleUtilizationThreshold,string"`
 	ThrottleUtilizationBound     float64               `json:"throttleUtilizationBound,string"`
 	ThrottleUpdateFraction       float64               `json:"throttleUpdateFraction,string"`
@@ -35,6 +35,6 @@ type BorrowLendMarketHistory struct {
 	BorrowedQuantity   float64   `json:"borrowedQuantity,string"`
 	LendInterestRate   float64   `json:"lendInterestRate,string"`
 	LentQuantity       float64   `json:"lentQuantity,string"`
-	Timestamp          time.Time `json:"timestamp" time_format:"RFC3339Nano"`
+	Timestamp          time.Time `json:"timestamp,format:RFC3339Nano"`
 	Utilization        float64   `json:"utilization,string"`
 }

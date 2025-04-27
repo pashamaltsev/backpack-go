@@ -1,10 +1,10 @@
 package options
 
 type FillHistoryOptions struct {
-	OrderID    *string     `json:"orderId"`
-	Symbol     *string     `json:"symbol"`
-	FillType   *FillType   `json:"fillType"`
-	MarketType *MarketType `json:"marketType"`
+	OrderID    string     `json:"orderId,omitempty"`
+	Symbol     string     `json:"symbol,omitempty"`
+	FillType   FillType   `json:"fillType,omitempty"`
+	MarketType MarketType `json:"marketType,omitempty"`
 	DateFilter
 }
 

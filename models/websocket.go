@@ -12,7 +12,7 @@ type Newable interface {
 
 type OrderUpdate struct {
 	EventType               string                          `json:"e"`
-	EventTime               time.Time                       `json:"E" time_format:"unixmicro"`
+	EventTime               time.Time                       `json:"E,format:unixmicro"`
 	Symbol                  string                          `json:"s"`
 	ClientOrderID           int64                           `json:"c"`
 	Side                    options.Side                    `json:"S"`
@@ -37,7 +37,7 @@ type OrderUpdate struct {
 	Fee                     float64                         `json:"n,string"`
 	FeeSymbol               string                          `json:"N"`
 	SelfTradePrevention     options.SelfTradePreventionType `json:"V"`
-	EngineTimestamp         time.Time                       `json:"T" time_format:"unixmicro"`
+	EngineTimestamp         time.Time                       `json:"T,format:unixmicro"`
 	Origin                  string                          `json:"O"`
 }
 
@@ -47,7 +47,7 @@ func (u *OrderUpdate) New() any {
 
 type PositionUpdate struct {
 	EventType                 string    `json:"e"`
-	EventTime                 time.Time `json:"E" time_format:"unixmicro"`
+	EventTime                 time.Time `json:"E,format:unixmicro"`
 	Symbol                    string    `json:"s"`
 	BreakEventPrice           float64   `json:"b,string"`
 	EntryPrice                float64   `json:"B,string"`
@@ -70,7 +70,7 @@ func (u *PositionUpdate) New() any {
 
 type RFQUpdate struct {
 	EventType       string       `json:"e"`
-	EventTime       time.Time    `json:"E" time_format:"unixmicro"`
+	EventTime       time.Time    `json:"E,format:unixmicro"`
 	RFQID           string       `json:"R"`
 	Symbol          string       `json:"s"`
 	QuoteID         string       `json:"Q"`
@@ -78,10 +78,10 @@ type RFQUpdate struct {
 	Side            options.Side `json:"S"`
 	Price           float64      `json:"p,string"`
 	Quantity        float64      `json:"q,string"`
-	SubmissionTime  time.Time    `json:"w" time_format:"unixmilli"`
-	ExpiryTime      time.Time    `json:"W" time_format:"unixmilli"`
+	SubmissionTime  time.Time    `json:"w,format:unixmilli"`
+	ExpiryTime      time.Time    `json:"W,format:unixmilli"`
 	Status          string       `json:"X"`
-	EngineTimestamp time.Time    `json:"T" time_format:"unixmicro"`
+	EngineTimestamp time.Time    `json:"T,format:unixmicro"`
 }
 
 func (u *RFQUpdate) New() any {
@@ -90,14 +90,14 @@ func (u *RFQUpdate) New() any {
 
 type BookTickerUpdate struct {
 	EventType  string    `json:"e"`
-	EventTime  time.Time `json:"E" time_format:"unixmicro"`
+	EventTime  time.Time `json:"E,format:unixmicro"`
 	Symbol     string    `json:"s"`
 	AskPrice   float64   `json:"a,string"`
 	AskSize    float64   `json:"A,string"`
 	BidPrice   float64   `json:"b,string"`
 	BidSize    float64   `json:"B,string"`
 	UpdateID   string    `json:"u"`
-	EngineTime time.Time `json:"T" time_format:"unixmicro"`
+	EngineTime time.Time `json:"T,format:unixmicro"`
 }
 
 func (u *BookTickerUpdate) New() any {
@@ -106,13 +106,13 @@ func (u *BookTickerUpdate) New() any {
 
 type DepthUpdate struct {
 	EventType     string      `json:"e"`
-	EventTime     time.Time   `json:"E" time_format:"unixmicro"`
+	EventTime     time.Time   `json:"E,format:unixmicro"`
 	Symbol        string      `json:"s"`
 	Asks          []DepthItem `json:"a"`
 	Bids          []DepthItem `json:"b"`
 	FirstUpdateID int64       `json:"U"`
 	LastUpdateID  int64       `json:"u"`
-	EngineTime    time.Time   `json:"T" time_format:"unixmicro"`
+	EngineTime    time.Time   `json:"T,format:unixmicro"`
 }
 
 func (u *DepthUpdate) New() any {
@@ -121,9 +121,9 @@ func (u *DepthUpdate) New() any {
 
 type KLineUpdate struct {
 	EventType string    `json:"e"`
-	EventTime time.Time `json:"E" time_format:"unixmicro"`
-	StartTime time.Time `json:"t" time_format:"2006-01-02T15:04:05"`
-	CloseTime time.Time `json:"T" time_format:"2006-01-02T15:04:05"`
+	EventTime time.Time `json:"E,format:unixmicro"`
+	StartTime time.Time `json:"t,format:'2006-01-02T15:04:05'"`
+	CloseTime time.Time `json:"T,format:'2006-01-02T15:04:05'"`
 	Open      float64   `json:"o,string"`
 	Close     float64   `json:"c,string"`
 	High      float64   `json:"h,string"`
@@ -139,12 +139,12 @@ func (u *KLineUpdate) New() any {
 
 type LiquidationUpdate struct {
 	EventType  string       `json:"e"`
-	EventTime  time.Time    `json:"E" time_format:"unixmicro"`
+	EventTime  time.Time    `json:"E,format:unixmicro"`
 	Quantity   float64      `json:"q,string"`
 	Price      float64      `json:"p,string"`
 	Side       options.Side `json:"S"`
 	Symbol     string       `json:"s"`
-	EngineTime time.Time    `json:"T" time_format:"unixmicro"`
+	EngineTime time.Time    `json:"T,format:unixmicro"`
 }
 
 func (u *LiquidationUpdate) New() any {
@@ -153,12 +153,12 @@ func (u *LiquidationUpdate) New() any {
 
 type MarkPriceUpdate struct {
 	EventType            string    `json:"e"`
-	EventTime            time.Time `json:"E" time_format:"unixmicro"`
+	EventTime            time.Time `json:"E,format:unixmicro"`
 	Symbol               string    `json:"s"`
 	MarkPrice            float64   `json:"p,string"`
 	EstimatedFundingRate float64   `json:"f,string"`
 	IndexPrice           float64   `json:"i,string"`
-	NextFundingTimestamp time.Time `json:"n" time_format:"unixmicro"`
+	NextFundingTimestamp time.Time `json:"n,format:unixmicro"`
 }
 
 func (u *MarkPriceUpdate) New() any {
@@ -167,7 +167,7 @@ func (u *MarkPriceUpdate) New() any {
 
 type TickerUpdate struct {
 	EventType   string    `json:"e"`
-	EventTime   time.Time `json:"E" time_format:"unixmicro"`
+	EventTime   time.Time `json:"E,format:unixmicro"`
 	Symbol      string    `json:"s"`
 	FirstPrice  float64   `json:"o,string"`
 	LastPrice   float64   `json:"c,string"`
@@ -184,7 +184,7 @@ func (u *TickerUpdate) New() any {
 
 type OpenInterestUpdate struct {
 	EventType    string    `json:"e"`
-	EventTime    time.Time `json:"E" time_format:"unixmicro"`
+	EventTime    time.Time `json:"E,format:unixmicro"`
 	Symbol       string    `json:"s"`
 	OpenInterest float64   `json:"o,string"`
 }
@@ -195,14 +195,14 @@ func (u *OpenInterestUpdate) New() any {
 
 type TradeUpdate struct {
 	EventType     string    `json:"e"`
-	EventTime     time.Time `json:"E" time_format:"unixmicro"`
+	EventTime     time.Time `json:"E,format:unixmicro"`
 	Symbol        string    `json:"s"`
 	Price         float64   `json:"p,string"`
 	Quantity      float64   `json:"q,string"`
 	BuyerOrderID  string    `json:"b"`
 	SellerOrderID string    `json:"a"`
 	TradeID       int       `json:"t"`
-	EngineTime    time.Time `json:"T" time_format:"unixmicro"`
+	EngineTime    time.Time `json:"T,format:unixmicro"`
 	IsMaker       bool      `json:"m"`
 }
 

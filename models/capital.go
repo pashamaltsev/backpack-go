@@ -50,7 +50,7 @@ type Deposit struct {
 	TransactionHash         *string       `json:"transactionHash"`
 	Symbol                  string        `json:"symbol"`
 	Quantity                string        `json:"quantity"`
-	CreatedAt               time.Time     `json:"createdAt" time_format:"2006-01-02T15:04:05.000"`
+	CreatedAt               time.Time     `json:"createdAt,format:'2006-01-02T15:04:05.000'"`
 }
 
 type DepositSource string
@@ -106,7 +106,7 @@ type Withdrawal struct {
 	SubAccountID    *int             `json:"subaccountId"`
 	ToAddress       string           `json:"toAddress"`
 	TransactionHash *string          `json:"transactionHash"`
-	CreatedAt       time.Time        `json:"createdAt"  time_format:"2006-01-02T15:04:05.000"`
+	CreatedAt       time.Time        `json:"createdAt,format:'2006-01-02T15:04:05.000'"`
 	IsInternal      bool             `json:"isInternal"`
 }
 

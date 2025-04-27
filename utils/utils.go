@@ -3,7 +3,7 @@ package utils
 import (
 	"unsafe"
 
-	json "github.com/json-iterator/go"
+	"github.com/go-json-experiment/json"
 )
 
 func BytesToString(bytes []byte) string {

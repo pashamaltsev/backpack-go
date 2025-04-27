@@ -5,7 +5,7 @@ import (
 	"strconv"
 
 	"github.com/UnipayFI/backpack-go/options"
-	json "github.com/json-iterator/go"
+	"github.com/go-json-experiment/json"
 
 	"time"
 )
@@ -21,7 +21,7 @@ type Market struct {
 	FundingInterval   *int64             `json:"fundingInterval"`
 	OpenInterestLimit *float64           `json:"openInterestLimit,string"`
 	OrderBookState    OrderBookState     `json:"orderBookState"`
-	CreatedAt         time.Time          `json:"createdAt" time_format:"2006-01-02T15:04:05.999999"`
+	CreatedAt         time.Time          `json:"createdAt,format:'2006-01-02T15:04:05.999999'"`
 }
 
 type OrderBookFilters struct {
@@ -91,7 +91,7 @@ type Depth struct {
 	Asks         []DepthItem `json:"asks"`
 	Bids         []DepthItem `json:"bids"`
 	LastUpdateID string      `json:"lastUpdateId"`
-	Timestamp    time.Time   `json:"timestamp" time_format:"unixmicro"`
+	Timestamp    time.Time   `json:"timestamp,format:unixmicro"`
 }
 
 type DepthItem [2]float64
@@ -116,8 +116,8 @@ func (di *DepthItem) UnmarshalJSON(data []byte) error {
 }
 
 type Kline struct {
-	Start       time.Time `json:"start" time_format:"DateTime"`
-	End         time.Time `json:"end" time_format:"DateTime"`
+	Start       time.Time `json:"start,format:DateTime"`
+	End         time.Time `json:"end,format:DateTime"`
 	Open        *float64  `json:"open,string"`
 	High        *float64  `json:"high,string"`
 	Low         *float64  `json:"low,string"`
@@ -131,14 +131,14 @@ type MarkPrice struct {
 	FundingRate          float64   `json:"fundingRate,string"`
 	IndexPrice           float64   `json:"indexPrice,string"`
 	MarkPrice            float64   `json:"markPrice,string"`
-	NextFundingTimestamp time.Time `json:"nextFundingTimestamp" time_format:"unixmilli"`
+	NextFundingTimestamp time.Time `json:"nextFundingTimestamp,format:unixmilli"`
 	Symbol               string    `json:"symbol"`
 }
 
 type OpenInterest struct {
 	Symbol       string    `json:"symbol"`
 	OpenInterest float64   `json:"openInterest,string"`
-	Timestamp    time.Time `json:"timestamp" time_format:"unixmilli"`
+	Timestamp    time.Time `json:"timestamp,format:unixmilli"`
 }
 
 type PageHeaders struct {
@@ -185,6 +185,6 @@ func ParseFundingRateHeaders(headers http.Header) *PageHeaders {
 
 type FundingRate struct {
 	Symbol               string    `json:"symbol"`
-	IntervalEndTimestamp time.Time `json:"intervalEndTimestamp" time_format:"2006-01-02T15:04:05"`
+	IntervalEndTimestamp time.Time `json:"intervalEndTimestamp,format:'2006-01-02T15:04:05'"`
 	FundingRate          float64   `json:"fundingRate,string"`
 }

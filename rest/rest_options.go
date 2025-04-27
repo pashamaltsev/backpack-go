@@ -59,9 +59,3 @@ func DefaultRESTOptions() *options {
 		Windows: constants.DefaultWindows,
 	}
 }
-
-func defaultWebSocketOptions() *options {
-	return &options{
-		BaseURL: constants.WebSocketBaseURL,
-	}
-}

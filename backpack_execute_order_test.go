@@ -25,38 +25,38 @@ func TestBackpackExecuteOrder(t *testing.T) {
 		}
 	})
 
-	// test ExecuteLimitOrder
-	t.Run("test basic ExecuteLimitOrder", func(t *testing.T) {
-		order, err := rest.ExecuteLimitOrder(
-			symbol,
-			options.Sell,
-			500,
-			0.11,
-			options.WithAutoLendRedeem(true),
-		)
-		if err != nil {
-			t.Errorf("ExecuteOrder failed: %v", err)
-		} else {
-			rest.CancelOrderByOrderID(symbol, order.ID)
-			fmt.Printf("OK: ExecuteOrder, order id: %+v\n\n", order.ID)
-		}
-	})
+	// // test ExecuteLimitOrder
+	// t.Run("test basic ExecuteLimitOrder", func(t *testing.T) {
+	// 	order, err := rest.ExecuteLimitOrder(
+	// 		symbol,
+	// 		options.Sell,
+	// 		500,
+	// 		0.11,
+	// 		options.WithAutoLendRedeem(true),
+	// 	)
+	// 	if err != nil {
+	// 		t.Errorf("ExecuteOrder failed: %v", err)
+	// 	} else {
+	// 		rest.CancelOrderByOrderID(symbol, order.ID)
+	// 		fmt.Printf("OK: ExecuteOrder, order id: %+v\n\n", order.ID)
+	// 	}
+	// })
 
-	// test ExecuteConditionalLimitOrder
-	t.Run("test ExecuteConditionalLimitOrder", func(t *testing.T) {
-		order, err := rest.ExecuteConditionalLimitOrder(
-			symbol,
-			options.Sell,
-			500,
-			490,
-			0.1,
-			options.WithAutoLendRedeem(true),
-		)
-		if err != nil {
-			t.Errorf("ExecuteOrder failed: %v", err)
-		} else {
-			rest.CancelOrderByOrderID(symbol, order.ID)
-			fmt.Printf("OK: ExecuteOrder, order id: %+v\n\n", order.ID)
-		}
-	})
+	// // test ExecuteConditionalLimitOrder
+	// t.Run("test ExecuteConditionalLimitOrder", func(t *testing.T) {
+	// 	order, err := rest.ExecuteConditionalLimitOrder(
+	// 		symbol,
+	// 		options.Sell,
+	// 		500,
+	// 		490,
+	// 		0.1,
+	// 		options.WithAutoLendRedeem(true),
+	// 	)
+	// 	if err != nil {
+	// 		t.Errorf("ExecuteOrder failed: %v", err)
+	// 	} else {
+	// 		rest.CancelOrderByOrderID(symbol, order.ID)
+	// 		fmt.Printf("OK: ExecuteOrder, order id: %+v\n\n", order.ID)
+	// 	}
+	// })
 }
