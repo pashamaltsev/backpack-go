@@ -3,7 +3,6 @@ package backpackgo
 import (
 	"fmt"
 	"strings"
-	"sync"
 	"time"
 
 	encodingjson "encoding/json"
@@ -22,7 +21,6 @@ type BackpackWebsocket struct {
 	Windows   time.Duration
 	conn      *websocket.Conn
 	handlers  map[string]func(encodingjson.RawMessage)
-	pool      sync.Pool
 }
 
 type Message struct {
@@ -42,6 +40,7 @@ func NewBackpackWebsocket(options ...ops.Options) (*BackpackWebsocket, error) {
 	if err != nil {
 		return nil, err
 	}
+	conn.SetPingHandler(nil)
 
 	websocket := &BackpackWebsocket{
 		BaseURL:   opts.BaseURL,
@@ -50,11 +49,6 @@ func NewBackpackWebsocket(options ...ops.Options) (*BackpackWebsocket, error) {
 		Windows:   opts.Windows,
 		conn:      conn,
 		handlers:  make(map[string]func(encodingjson.RawMessage)),
-		pool: sync.Pool{
-			New: func() any {
-				return &Message{}
-			},
-		},
 	}
 	go websocket.loop()
 	return websocket, nil
@@ -135,7 +129,7 @@ func SubscribePrivateStream[T any](client *BackpackWebsocket, stream string, new
 	}
 	client.handlers[stream] = func(payload encodingjson.RawMessage) {
 		obj := newable.New()
-		json.Unmarshal(payload, &obj)
+		json.Unmarshal(payload, obj)
 		handler(obj.(T))
 	}
 	return client.conn.WriteJSON(request)
@@ -145,7 +139,7 @@ func SubscribePublicStream[T any](client *BackpackWebsocket, stream string, newa
 	request := client.payload(stream, "subscribe")
 	client.handlers[stream] = func(payload encodingjson.RawMessage) {
 		obj := newable.New()
-		json.Unmarshal(payload, &obj)
+		json.Unmarshal(payload, obj)
 		handler(obj.(T))
 	}
 	return client.conn.WriteJSON(request)
@@ -162,12 +156,11 @@ func (client *BackpackWebsocket) loop() {
 }
 
 func (client *BackpackWebsocket) handleMessage(message []byte) {
-	msg := client.pool.Get().(*Message)
+	msg := new(Message)
 	json.Unmarshal(message, &msg)
 	if client.handlers[msg.Stream] != nil {
 		go client.handlers[msg.Stream](msg.Data)
 	}
-	client.pool.Put(msg)
 }
 
 func (client *BackpackWebsocket) sign(stream, instruction string) (map[string]any, error) {
