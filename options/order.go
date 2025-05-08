@@ -39,7 +39,7 @@ type OrderOptions struct {
 	AutoLendRedeem         *bool                    `json:"autoLendRedeem,omitempty"`
 	AutoBorrow             *bool                    `json:"autoBorrow,omitempty"`
 	AutoBorrowRepay        *bool                    `json:"autoBorrowRepay,omitempty"`
-	ClientID               *int32                   `json:"clientId,omitempty"`
+	ClientID               *uint32                  `json:"clientId,omitempty"`
 	PostOnly               *bool                    `json:"postOnly,omitempty"`
 	ReduceOnly             *bool                    `json:"reduceOnly,omitempty"`
 	SelfTradePrevention    *SelfTradePreventionType `json:"selfTradePrevention,omitempty"`
@@ -94,7 +94,7 @@ func WithAutoBorrowRepay(autoBorrowRepay bool) OrderOptionFn {
 	}
 }
 
-func WithClientID(clientID int32) OrderOptionFn {
+func WithClientID(clientID uint32) OrderOptionFn {
 	return func(o *OrderOptions) {
 		o.ClientID = &clientID
 	}

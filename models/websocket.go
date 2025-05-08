@@ -11,10 +11,10 @@ type Newable interface {
 }
 
 type OrderUpdate struct {
-	EventType               string                          `json:"e"`
+	EventType               OrderEventType                  `json:"e"`
 	EventTime               time.Time                       `json:"E,format:unixmicro"`
 	Symbol                  string                          `json:"s"`
-	ClientOrderID           int64                           `json:"c"`
+	ClientOrderID           uint32                          `json:"c"`
 	Side                    options.Side                    `json:"S"`
 	OrderType               options.OrderType               `json:"o"`
 	TimeInForce             options.TimeInForce             `json:"f"`
@@ -41,6 +41,18 @@ type OrderUpdate struct {
 	Origin                  string                          `json:"O"`
 }
 
+type OrderEventType string
+
+const (
+	OrderEventTypeAccepted      OrderEventType = "orderAccepted"
+	OrderEventTypeCancelled     OrderEventType = "orderCancelled"
+	OrderEventTypeExpired       OrderEventType = "orderExpired"
+	OrderEventTypeFilled        OrderEventType = "orderFill"
+	OrderEventTypeModified      OrderEventType = "orderModified"
+	OrderEventTypeTriggerPlaced OrderEventType = "triggerPlaced"
+	OrderEventTypeTriggerFailed OrderEventType = "triggerFailed"
+)
+
 func (u *OrderUpdate) New() any {
 	return &OrderUpdate{}
 }
@@ -58,10 +70,10 @@ type PositionUpdate struct {
 	NetQuantity               float64   `json:"q,string"`
 	NetExposureQuantity       float64   `json:"Q,string"`
 	NetExposureNotional       float64   `json:"n,string"`
-	PositionID                string    `json:"i"`
+	PositionID                int64     `json:"i"`
 	PnLRealized               float64   `json:"p,string"`
 	PnLUnrealized             float64   `json:"P,string"`
-	EngineTimestamp           time.Time `json:"T" time_format:"unixmicro"`
+	EngineTimestamp           time.Time `json:"T,format:unixmicro"`
 }
 
 func (u *PositionUpdate) New() any {

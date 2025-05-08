@@ -443,9 +443,9 @@ func (b *BackpackREST) CancelOrderByOrderID(symbol string, orderID string) (*mod
 	return Response[*models.Order](RequestWithAuth(b, "DELETE", path, "orderCancel", params))
 }
 
-func (b *BackpackREST) CancelOrderByClientID(symbol string, clientID int) (*models.Order, error) {
+func (b *BackpackREST) CancelOrderByClientID(symbol string, clientID uint32) (*models.Order, error) {
 	path := "/api/v1/order"
-	params := map[string]any{"symbol": symbol, "clientId": strconv.Itoa(clientID)}
+	params := map[string]any{"symbol": symbol, "clientId": strconv.Itoa(int(clientID))}
 	return Response[*models.Order](RequestWithAuth(b, "DELETE", path, "orderCancel", params))
 }
 
