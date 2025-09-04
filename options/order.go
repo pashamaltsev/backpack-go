@@ -1,6 +1,6 @@
 package options
 
-import "github.com/UnipayFI/backpack-go/utils"
+import "github.com/pashamaltsev/backpack-go/utils"
 
 type OrderType string
 

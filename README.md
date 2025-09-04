@@ -14,7 +14,7 @@ A Go SDK for Backpack Exchange, API Docs: <a href="https://docs.backpack.exchang
 To use this SDK in your Go project, you can add it as a dependency with:
 
 ```bash
-go get -u github.com/UnipayFI/backpack-go
+go get -u github.com/pashamaltsev/backpack-go
 ```
 
 ## Usage
@@ -25,8 +25,8 @@ go get -u github.com/UnipayFI/backpack-go
 package main
 
 import (
-	backpackgo "github.com/UnipayFI/backpack-go"
-	"github.com/UnipayFI/backpack-go/rest"
+	backpackgo "github.com/pashamaltsev/backpack-go"
+	"github.com/pashamaltsev/backpack-go/rest"
 )
 
 func main() {
@@ -117,7 +117,7 @@ package main
 import (
     "fmt"
     
-    "github.com/UnipayFI/backpack-go"
+    "github.com/pashamaltsev/backpack-go"
 )
 
 func main() {

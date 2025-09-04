@@ -5,10 +5,10 @@ import (
 	"os"
 	"testing"
 
-	"github.com/UnipayFI/backpack-go/models"
-	"github.com/UnipayFI/backpack-go/options"
-	"github.com/UnipayFI/backpack-go/rest"
-	"github.com/UnipayFI/backpack-go/utils"
+	"github.com/pashamaltsev/backpack-go/models"
+	"github.com/pashamaltsev/backpack-go/options"
+	"github.com/pashamaltsev/backpack-go/rest"
+	"github.com/pashamaltsev/backpack-go/utils"
 )
 
 func TestBackpackAuthREST(t *testing.T) {

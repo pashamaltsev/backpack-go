@@ -6,9 +6,9 @@ import (
 	"testing"
 	"time"
 
-	"github.com/UnipayFI/backpack-go/models"
-	"github.com/UnipayFI/backpack-go/options"
-	"github.com/UnipayFI/backpack-go/websocket"
+	"github.com/pashamaltsev/backpack-go/models"
+	"github.com/pashamaltsev/backpack-go/options"
+	"github.com/pashamaltsev/backpack-go/websocket"
 )
 
 func TestBackpackWebsocket(t *testing.T) {

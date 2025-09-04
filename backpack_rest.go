@@ -7,11 +7,11 @@ import (
 	"strconv"
 	"time"
 
-	"github.com/UnipayFI/backpack-go/constants"
-	"github.com/UnipayFI/backpack-go/models"
-	"github.com/UnipayFI/backpack-go/options"
-	"github.com/UnipayFI/backpack-go/rest"
-	"github.com/UnipayFI/backpack-go/utils"
+	"github.com/pashamaltsev/backpack-go/constants"
+	"github.com/pashamaltsev/backpack-go/models"
+	"github.com/pashamaltsev/backpack-go/options"
+	"github.com/pashamaltsev/backpack-go/rest"
+	"github.com/pashamaltsev/backpack-go/utils"
 
 	"github.com/go-json-experiment/json"
 	"resty.dev/v3"

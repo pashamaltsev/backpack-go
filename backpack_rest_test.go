@@ -5,7 +5,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/UnipayFI/backpack-go/options"
+	"github.com/pashamaltsev/backpack-go/options"
 )
 
 func TestBackpackPublicREST(t *testing.T) {

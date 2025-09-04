@@ -7,11 +7,11 @@ import (
 
 	encodingjson "encoding/json"
 
-	"github.com/UnipayFI/backpack-go/models"
-	"github.com/UnipayFI/backpack-go/options"
-	ops "github.com/UnipayFI/backpack-go/websocket"
 	"github.com/go-json-experiment/json"
 	"github.com/gorilla/websocket"
+	"github.com/pashamaltsev/backpack-go/models"
+	"github.com/pashamaltsev/backpack-go/options"
+	ops "github.com/pashamaltsev/backpack-go/websocket"
 )
 
 type BackpackWebsocket struct {

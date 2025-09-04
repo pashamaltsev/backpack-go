@@ -3,7 +3,7 @@ package models
 import (
 	"time"
 
-	"github.com/UnipayFI/backpack-go/options"
+	"github.com/pashamaltsev/backpack-go/options"
 )
 
 type BorrowLendHistory struct {

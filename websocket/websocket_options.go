@@ -5,8 +5,8 @@ import (
 	"net/url"
 	"time"
 
-	"github.com/UnipayFI/backpack-go/constants"
 	"github.com/gorilla/websocket"
+	"github.com/pashamaltsev/backpack-go/constants"
 )
 
 type options struct {
